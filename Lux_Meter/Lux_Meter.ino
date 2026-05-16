@@ -143,7 +143,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
   tr:hover td{background:rgba(255,204,0,0.04)}
   .td-lux{color:var(--accent1)}.td-raw{color:#a855f7}.td-idx{color:var(--muted);font-size:.7rem}
   footer{text-align:center;margin-top:20px;color:var(--muted);font-size:.72rem;font-family:'Share Tech Mono',monospace;letter-spacing:.1em}
-  .college-info{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-top:28px;text-align:center}
+  .college-info{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:16px 24px;margin-bottom:24px;text-align:center}
   .ci-name{font-size:.95rem;font-weight:700;letter-spacing:.06em;margin-bottom:4px}
   .ci-proj{font-size:.75rem;color:var(--accent1);margin-bottom:12px;font-family:'Share Tech Mono',monospace;letter-spacing:.08em}
   .ci-team{font-size:.72rem;color:var(--muted);line-height:2}
@@ -156,6 +156,16 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
   <h1>&#9728;&#xFE0F; Lux Meter</h1>
   <p>ESP8266 &bull; TEMT6000 &bull; ACCESS POINT MODE</p>
 </header>
+<div class="college-info">
+  <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
+  <div class="ci-proj">Project: Lux Meter using ESP8266 &amp; TEMT6000 Sensor</div>
+  <div class="ci-team">
+    <b>Rahul Sharma</b> <span class="roll">(Roll No. 2024CS101)</span> &bull;
+    <b>Priya Patil</b> <span class="roll">(Roll No. 2024CS102)</span> &bull;
+    <b>Amit Kumar</b> <span class="roll">(Roll No. 2024CS103)</span> &bull;
+    <b>Sneha Reddy</b> <span class="roll">(Roll No. 2024CS104)</span>
+  </div>
+</div>
 <div class="status-bar">
   <span class="dot" id="statusDot"></span>
   <span id="statusText">Sensor Active</span>
@@ -214,16 +224,6 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
       <tr><td colspan="4" style="color:var(--muted);text-align:center">Loading...</td></tr>
     </tbody>
   </table>
-</div>
-<div class="college-info">
-  <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
-  <div class="ci-proj">Project: Lux Meter using ESP8266 &amp; TEMT6000 Sensor</div>
-  <div class="ci-team">
-    <b>Rahul Sharma</b> <span class="roll">(Roll No. 2024CS101)</span> &bull;
-    <b>Priya Patil</b> <span class="roll">(Roll No. 2024CS102)</span> &bull;
-    <b>Amit Kumar</b> <span class="roll">(Roll No. 2024CS103)</span> &bull;
-    <b>Sneha Reddy</b> <span class="roll">(Roll No. 2024CS104)</span>
-  </div>
 </div>
 <footer>ESP8266 Lux Meter &bull; 192.168.4.1 &bull; SSID: LuxMeter_AP</footer>
 

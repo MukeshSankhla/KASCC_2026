@@ -99,7 +99,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
   .scope-dot.red{background:var(--blip);box-shadow:0 0 5px var(--blip)}
 
   footer{text-align:center;margin-top:20px;color:var(--radar-dim);font-size:.7rem}
-  .college-info{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:18px 22px;margin-top:24px;text-align:center}
+  .college-info{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:14px 22px;margin-bottom:20px;text-align:center}
   .ci-name{font-size:.9rem;font-weight:700;letter-spacing:.06em;margin-bottom:4px;color:var(--text)}
   .ci-proj{font-size:.72rem;color:var(--radar);margin-bottom:10px;letter-spacing:.08em}
   .ci-team{font-size:.68rem;color:var(--radar-dim);line-height:2}
@@ -112,6 +112,16 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
   <h1>SYS.RADAR_SCAN</h1>
   <p>AP-MODE // 192.168.4.1 // SECURE</p>
 </header>
+<div class="college-info">
+  <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
+  <div class="ci-proj">Project: Radar Scanner using ESP8266, Servo &amp; Ultrasonic</div>
+  <div class="ci-team">
+    <b>Rahul Sharma</b> <span class="roll">(Roll No. 2024CS101)</span> &bull;
+    <b>Priya Patil</b> <span class="roll">(Roll No. 2024CS102)</span> &bull;
+    <b>Amit Kumar</b> <span class="roll">(Roll No. 2024CS103)</span> &bull;
+    <b>Sneha Reddy</b> <span class="roll">(Roll No. 2024CS104)</span>
+  </div>
+</div>
 
 <div class="stats">
   <div class="stat-box">
@@ -136,16 +146,6 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
   <span><span class="scope-dot red"></span> Close (&lt;20cm)</span>
 </div>
 
-<div class="college-info">
-  <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
-  <div class="ci-proj">Project: Radar Scanner using ESP8266, Servo &amp; Ultrasonic</div>
-  <div class="ci-team">
-    <b>Rahul Sharma</b> <span class="roll">(Roll No. 2024CS101)</span> &bull;
-    <b>Priya Patil</b> <span class="roll">(Roll No. 2024CS102)</span> &bull;
-    <b>Amit Kumar</b> <span class="roll">(Roll No. 2024CS103)</span> &bull;
-    <b>Sneha Reddy</b> <span class="roll">(Roll No. 2024CS104)</span>
-  </div>
-</div>
 <footer>AEROSPACE DEFENSE DASHBOARD &bull; SYSTEM ONLINE</footer>
 
 <script>

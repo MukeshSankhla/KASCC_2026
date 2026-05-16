@@ -15,6 +15,7 @@ A collection of **7 hands-on IoT projects** built with the ESP8266 (NodeMCU) mic
 | 5 | [Water Tank Monitor](./Water_Tank_Monitor/) | HC-SR04 | ✅ Tank + Bubbles | Water level monitor with animated tank, bubbles & fish |
 | 6 | [Radar Scanner](./Radar/) | HC-SR04 + Servo | ✅ Radar Scope | 180° radar scanner with phosphor glow trail |
 | 7 | [Obstacle Detector](./Obstacle_Detection_System/) | HC-SR04 | ❌ Buzzer Only | Proximity alert system with buzzer feedback |
+| 8 | [Measurement Tool](./Measurement_Tool/) | HC-SR04 | ✅ Digital Ruler | Contactless distance meter with ruler bar & beam animation |
 
 ---
 
