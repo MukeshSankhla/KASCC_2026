@@ -15,7 +15,7 @@
 #include <DHT11.h>
 
 // ── Configuration ────────────────────────────────────────────────
-#define DHTPIN        2          // GPIO2 = D4 on NodeMCU
+#define DHTPIN        5          // GPIO2 = D4 on NodeMCU
 #define LED_PIN       4          // GPIO4 = D2 on NodeMCU
 
 const char* AP_SSID     = "WeatherStation";
@@ -268,14 +268,13 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
   .td-hum  { color: var(--accent1); }
   .td-idx  { color: var(--muted); font-size: 0.7rem; }
 
-  footer {
-    text-align: center;
-    margin-top: 32px;
-    color: var(--muted);
-    font-size: 0.72rem;
-    font-family: 'Share Tech Mono', monospace;
-    letter-spacing: 0.1em;
-  }
+  footer{text-align:center;margin-top:20px;color:var(--muted);font-size:.72rem;font-family:'Share Tech Mono',monospace;letter-spacing:.1em}
+  .college-info{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-top:28px;text-align:center}
+  .ci-name{font-size:.95rem;font-weight:700;letter-spacing:.06em;margin-bottom:4px}
+  .ci-proj{font-size:.75rem;color:var(--accent2);margin-bottom:12px;font-family:'Share Tech Mono',monospace;letter-spacing:.08em}
+  .ci-team{font-size:.72rem;color:var(--muted);line-height:2}
+  .ci-team b{color:var(--text);font-weight:600}
+  .ci-team .roll{color:var(--muted);font-size:.65rem}
 </style>
 </head>
 <body>
@@ -336,6 +335,16 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
   </table>
 </div>
 
+<div class="college-info">
+  <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
+  <div class="ci-proj">Project: Weather Station using ESP8266 &amp; DHT11 Sensor</div>
+  <div class="ci-team">
+    <b>Rahul Sharma</b> <span class="roll">(Roll No. 2024CS101)</span> &bull;
+    <b>Priya Patil</b> <span class="roll">(Roll No. 2024CS102)</span> &bull;
+    <b>Amit Kumar</b> <span class="roll">(Roll No. 2024CS103)</span> &bull;
+    <b>Sneha Reddy</b> <span class="roll">(Roll No. 2024CS104)</span>
+  </div>
+</div>
 <footer>ESP8266 Weather Station &bull; 192.168.4.1 &bull; SSID: WeatherStation</footer>
 
 <script>

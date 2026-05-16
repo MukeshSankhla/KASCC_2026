@@ -68,71 +68,46 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 <title>ESP8266 Tactical Radar</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+  :root{--bg:#020804;--panel:#05140a;--border:#0a2e16;--radar:#00ff41;--radar-dim:#005515;--blip:#ff3333;--text:#ccffcc}
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:'Share Tech Mono',monospace;min-height:100vh;padding:20px;
+    background-image:linear-gradient(rgba(0,255,65,0.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,255,65,0.03) 1px,transparent 1px);background-size:30px 30px;position:relative}
+  body::after{content:'';position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:99;
+    background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.06) 2px,rgba(0,0,0,0.06) 4px)}
 
-  :root {
-    --bg:       #020804;
-    --panel:    #05140a;
-    --border:   #0a2e16;
-    --radar:    #00ff41; /* Classic Terminal Green */
-    --radar-dim:#005515;
-    --blip:     #ff3333; /* Hostile Red */
-    --text:     #ccffcc;
-  }
+  header{text-align:center;margin-bottom:20px;text-transform:uppercase}
+  header h1{font-size:2rem;color:var(--radar);text-shadow:0 0 10px var(--radar),0 0 30px rgba(0,255,65,0.3);letter-spacing:2px}
+  header p{color:var(--radar-dim);font-size:.8rem;letter-spacing:4px}
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  .stats{display:flex;justify-content:center;gap:20px;margin-bottom:25px;flex-wrap:wrap}
+  .stat-box{background:var(--panel);border:1px solid var(--border);padding:15px 25px;border-radius:8px;
+    text-align:center;min-width:140px;box-shadow:inset 0 0 15px rgba(0,255,65,0.05);transition:border-color .3s}
+  .stat-box:hover{border-color:var(--radar)}
+  .stat-label{font-size:.7rem;color:var(--radar-dim);margin-bottom:5px}
+  .stat-val{font-size:1.8rem;font-weight:bold;color:var(--radar);text-shadow:0 0 8px rgba(0,255,65,0.4)}
+  .stat-val.alert{color:var(--blip);text-shadow:0 0 10px var(--blip);animation:blipPulse 1s infinite}
+  @keyframes blipPulse{0%,100%{opacity:1}50%{opacity:.6}}
 
-  body {
-    background: var(--bg); color: var(--text);
-    font-family: 'Share Tech Mono', monospace;
-    min-height: 100vh; padding: 20px;
-    background-image: 
-      linear-gradient(rgba(0, 255, 65, 0.03) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0, 255, 65, 0.03) 1px, transparent 1px);
-    background-size: 30px 30px;
-  }
+  .radar-container{display:flex;justify-content:center;position:relative;margin:0 auto;width:100%;max-width:600px}
+  canvas{background:var(--panel);border:2px solid var(--radar-dim);border-radius:50% 50% 0 0;
+    box-shadow:0 0 30px rgba(0,255,65,0.1),inset 0 0 40px rgba(0,255,65,0.05);max-width:100%;height:auto}
 
-  header { text-align: center; margin-bottom: 20px; text-transform: uppercase; }
-  header h1 { font-size: 2rem; color: var(--radar); text-shadow: 0 0 10px var(--radar); letter-spacing: 2px;}
-  header p { color: var(--radar-dim); font-size: 0.8rem; letter-spacing: 4px; }
+  .scope-info{display:flex;justify-content:center;gap:30px;margin-top:15px;font-size:.7rem;color:var(--radar-dim)}
+  .scope-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px;vertical-align:middle}
+  .scope-dot.green{background:var(--radar);box-shadow:0 0 5px var(--radar)}
+  .scope-dot.red{background:var(--blip);box-shadow:0 0 5px var(--blip)}
 
-  /* ── Stats Grid ── */
-  .stats {
-    display: flex; justify-content: center; gap: 20px; margin-bottom: 30px; flex-wrap: wrap;
-  }
-  .stat-box {
-    background: var(--panel); border: 1px solid var(--border);
-    padding: 15px 25px; border-radius: 8px; text-align: center;
-    min-width: 150px; box-shadow: inset 0 0 15px rgba(0,255,65,0.05);
-  }
-  .stat-label { font-size: 0.7rem; color: var(--radar-dim); margin-bottom: 5px; }
-  .stat-val { font-size: 1.8rem; font-weight: bold; color: var(--radar); text-shadow: 0 0 8px rgba(0,255,65,0.4); }
-  .stat-val.alert { color: var(--blip); text-shadow: 0 0 10px var(--blip); }
-
-  /* ── Radar Canvas Area ── */
-  .radar-container {
-    display: flex; justify-content: center; position: relative;
-    margin: 0 auto; width: 100%; max-width: 600px;
-  }
-  canvas {
-    background: var(--panel);
-    border: 2px solid var(--radar-dim);
-    border-radius: 50% 50% 0 0;
-    box-shadow: 0 0 30px rgba(0,255,65,0.1);
-    max-width: 100%;
-    height: auto;
-  }
-  
-  .scanline {
-    position: absolute; width: 100%; height: 2px; background: rgba(0,255,65,0.2);
-    top: 0; left: 0; animation: scan 4s linear infinite; pointer-events: none;
-  }
-  @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
-
-  footer { text-align: center; margin-top: 40px; color: var(--radar-dim); font-size: 0.7rem; }
+  footer{text-align:center;margin-top:20px;color:var(--radar-dim);font-size:.7rem}
+  .college-info{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:18px 22px;margin-top:24px;text-align:center}
+  .ci-name{font-size:.9rem;font-weight:700;letter-spacing:.06em;margin-bottom:4px;color:var(--text)}
+  .ci-proj{font-size:.72rem;color:var(--radar);margin-bottom:10px;letter-spacing:.08em}
+  .ci-team{font-size:.68rem;color:var(--radar-dim);line-height:2}
+  .ci-team b{color:var(--text);font-weight:600}
+  .ci-team .roll{color:var(--radar-dim);font-size:.62rem}
 </style>
 </head>
 <body>
-
 <header>
   <h1>SYS.RADAR_SCAN</h1>
   <p>AP-MODE // 192.168.4.1 // SECURE</p>
@@ -147,107 +122,113 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
     <div class="stat-label">PROXIMITY ALERT</div>
     <div class="stat-val" id="distVal">-- cm</div>
   </div>
+  <div class="stat-box">
+    <div class="stat-label">OBJECTS DETECTED</div>
+    <div class="stat-val" id="objCount">0</div>
+  </div>
 </div>
 
 <div class="radar-container">
   <canvas id="radarCanvas" width="600" height="300"></canvas>
-  <div class="scanline"></div>
+</div>
+<div class="scope-info">
+  <span><span class="scope-dot green"></span> Detected (&gt;20cm)</span>
+  <span><span class="scope-dot red"></span> Close (&lt;20cm)</span>
 </div>
 
+<div class="college-info">
+  <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
+  <div class="ci-proj">Project: Radar Scanner using ESP8266, Servo &amp; Ultrasonic</div>
+  <div class="ci-team">
+    <b>Rahul Sharma</b> <span class="roll">(Roll No. 2024CS101)</span> &bull;
+    <b>Priya Patil</b> <span class="roll">(Roll No. 2024CS102)</span> &bull;
+    <b>Amit Kumar</b> <span class="roll">(Roll No. 2024CS103)</span> &bull;
+    <b>Sneha Reddy</b> <span class="roll">(Roll No. 2024CS104)</span>
+  </div>
+</div>
 <footer>AEROSPACE DEFENSE DASHBOARD &bull; SYSTEM ONLINE</footer>
 
 <script>
-const canvas = document.getElementById('radarCanvas');
-const ctx = canvas.getContext('2d');
-const cx = canvas.width / 2;
-const cy = canvas.height;
-const radius = canvas.width / 2 - 20; 
-const MAX_RANGE = 100; // cm
+var canvas=document.getElementById('radarCanvas');
+var ctx=canvas.getContext('2d');
+var cx=canvas.width/2,cy=canvas.height;
+var radius=canvas.width/2-20;
+var MAX_RANGE=100;
+var prevAngle=0;
+var trailData=[];
 
-function drawRadarGrid() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.strokeStyle = 'rgba(0, 255, 65, 0.3)';
-  ctx.lineWidth = 1;
-
-  // Concentric arcs
-  for (let r = 0.25; r <= 1; r += 0.25) {
-    ctx.beginPath();
-    ctx.arc(cx, cy, radius * r, Math.PI, 0);
-    ctx.stroke();
+function drawRadarGrid(){
+  ctx.fillStyle='rgba(2,8,4,0.15)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.strokeStyle='rgba(0,255,65,0.2)';ctx.lineWidth=1;
+  for(var r=0.25;r<=1;r+=0.25){
+    ctx.beginPath();ctx.arc(cx,cy,radius*r,Math.PI,0);ctx.stroke();
+    ctx.fillStyle='rgba(0,255,65,0.3)';ctx.font='10px Share Tech Mono';ctx.textAlign='center';
+    ctx.fillText(Math.round(r*MAX_RANGE)+'cm',cx+radius*r+2,cy-5);
   }
-
-  // Angle lines
-  for (let a = 0; a <= 180; a += 30) {
-    let rad = a * Math.PI / 180;
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(cx - radius * Math.cos(rad), cy - radius * Math.sin(rad));
-    ctx.stroke();
+  for(var a=0;a<=180;a+=30){
+    var rad=a*Math.PI/180;ctx.beginPath();ctx.moveTo(cx,cy);
+    ctx.lineTo(cx-radius*Math.cos(rad),cy-radius*Math.sin(rad));ctx.stroke();
+    if(a>0&&a<180){ctx.fillStyle='rgba(0,255,65,0.25)';ctx.font='10px Share Tech Mono';
+      var lx=cx-(radius+12)*Math.cos(rad);var ly=cy-(radius+12)*Math.sin(rad);ctx.textAlign='center';ctx.fillText(a+'°',lx,ly);}
   }
 }
 
-function drawBlips(dataArray, currentAngle) {
-  // Draw the sweeping beam
-  let beamRad = currentAngle * Math.PI / 180;
+function drawSweep(angle,dataArray){
+  var beamRad=angle*Math.PI/180;
+  trailData.push({angle:angle,time:Date.now()});
+  var now=Date.now();
+  trailData=trailData.filter(function(t){return now-t.time<2000});
+  for(var i=0;i<trailData.length;i++){
+    var age=(now-trailData[i].time)/2000;
+    var alpha=0.3*(1-age);
+    var tRad=trailData[i].angle*Math.PI/180;
+    ctx.beginPath();ctx.moveTo(cx,cy);
+    ctx.lineTo(cx-radius*Math.cos(tRad),cy-radius*Math.sin(tRad));
+    ctx.strokeStyle='rgba(0,255,65,'+alpha+')';ctx.lineWidth=2;ctx.stroke();
+  }
+  var grad=ctx.createLinearGradient(cx,cy,cx-radius*Math.cos(beamRad),cy-radius*Math.sin(beamRad));
+  grad.addColorStop(0,'rgba(0,255,65,0.8)');grad.addColorStop(1,'rgba(0,255,65,0.1)');
+  ctx.beginPath();ctx.moveTo(cx,cy);
+  ctx.lineTo(cx-radius*Math.cos(beamRad),cy-radius*Math.sin(beamRad));
+  ctx.strokeStyle=grad;ctx.lineWidth=3;ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(cx, cy);
-  ctx.lineTo(cx - radius * Math.cos(beamRad), cy - radius * Math.sin(beamRad));
-  ctx.strokeStyle = 'rgba(0, 255, 65, 0.8)';
-  ctx.lineWidth = 3;
-  ctx.stroke();
-
-  // Draw detected objects
-  for(let i = 0; i < dataArray.length; i++) {
-    let dist = dataArray[i];
-    if (dist < MAX_RANGE) {
-      let angle = i * 5; 
-      let rad = angle * Math.PI / 180;
-      let scaledDist = (dist / MAX_RANGE) * radius;
-      
-      let x = cx - scaledDist * Math.cos(rad);
-      let y = cy - scaledDist * Math.sin(rad);
-
-      ctx.beginPath();
-      ctx.arc(x, y, 4, 0, Math.PI * 2);
-      ctx.fillStyle = dist < 20 ? '#ff3333' : '#00ff41'; // Red if very close
-      ctx.fill();
-      ctx.shadowBlur = 10;
-      ctx.shadowColor = ctx.fillStyle;
-      ctx.fill();
-      ctx.shadowBlur = 0; // reset
-    }
-  }
+  var sw=8*Math.PI/180;
+  ctx.moveTo(cx,cy);ctx.arc(cx,cy,radius,-(beamRad+sw),-(beamRad-sw));ctx.closePath();
+  ctx.fillStyle='rgba(0,255,65,0.08)';ctx.fill();
 }
 
-async function fetchRadarData() {
-  try {
-    const res = await fetch('/data');
-    const data = await res.json();
-
-    document.getElementById('angleVal').innerHTML = data.angle + '&deg;';
-    
-    const distEl = document.getElementById('distVal');
-    if(data.closest < MAX_RANGE) {
-      distEl.textContent = data.closest + ' cm';
-      distEl.className = data.closest < 20 ? 'stat-val alert' : 'stat-val';
-    } else {
-      distEl.textContent = 'CLEAR';
-      distEl.className = 'stat-val';
+function drawBlips(dataArray,currentAngle){
+  var objCount=0;
+  for(var i=0;i<dataArray.length;i++){
+    var dist=dataArray[i];
+    if(dist<MAX_RANGE){
+      objCount++;var angle=i*5;var rad=angle*Math.PI/180;
+      var sd=(dist/MAX_RANGE)*radius;
+      var x=cx-sd*Math.cos(rad);var y=cy-sd*Math.sin(rad);
+      var isClose=dist<20;var col=isClose?'#ff3333':'#00ff41';
+      var pulse=1+0.3*Math.sin(Date.now()/300);
+      ctx.beginPath();ctx.arc(x,y,4*pulse,0,Math.PI*2);ctx.fillStyle=col;
+      ctx.shadowBlur=isClose?15:10;ctx.shadowColor=col;ctx.fill();ctx.shadowBlur=0;
+      ctx.beginPath();ctx.arc(x,y,8,0,Math.PI*2);ctx.strokeStyle=col.replace(')',',0.3)').replace('rgb','rgba');
+      ctx.lineWidth=1;ctx.stroke();
     }
-
-    drawRadarGrid();
-    drawBlips(data.map, data.angle);
-
-  } catch(e) {
-    console.error("Radar connection lost");
   }
+  document.getElementById('objCount').textContent=objCount;
 }
 
-// Draw initial empty grid
-drawRadarGrid();
-
-// Fetch rapid updates to keep the animation smooth
-setInterval(fetchRadarData, 250);
+async function fetchRadarData(){
+  try{
+    var res=await fetch('/data');var data=await res.json();
+    document.getElementById('angleVal').innerHTML=data.angle+'&deg;';
+    var distEl=document.getElementById('distVal');
+    if(data.closest<MAX_RANGE){distEl.textContent=data.closest+' cm';
+      distEl.className=data.closest<20?'stat-val alert':'stat-val';}
+    else{distEl.textContent='CLEAR';distEl.className='stat-val';}
+    drawRadarGrid();drawSweep(data.angle,data.map);drawBlips(data.map,data.angle);
+  }catch(e){console.error('Radar connection lost');}
+}
+drawRadarGrid();setInterval(fetchRadarData,250);
 </script>
 </body>
 </html>
