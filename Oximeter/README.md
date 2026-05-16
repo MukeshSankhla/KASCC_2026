@@ -35,7 +35,7 @@ Pulse Sensor → A0 (Analog Read) → ESP8266 (Peak Detection Algorithm)
 
 1. **Signal Acquisition:** The pulse sensor outputs an analog voltage that fluctuates with each heartbeat. The ESP8266 reads this at A0 every 10ms.
 2. **Peak Detection:** When the signal crosses a configurable threshold, a "beat" is registered. The time between consecutive beats (Inter-Beat Interval) is used to calculate BPM: `BPM = 60000 / IBI_ms`.
-3. **Noise Filtering:** Beats with IBI outside the 300ms–2000ms range (corresponding to 30–200 BPM) are rejected as noise.
+3. **Noise Filtering:** Beats with IBI outside the 333ms–1200ms range (corresponding to 50–180 BPM) are rejected as noise to ensure only true human heart rate values are displayed.
 4. **Web Dashboard:** The ESP8266 runs as a WiFi Access Point and HTTP server. The dashboard fetches live data via JSON API every 2 seconds.
 5. **LED Feedback:** A physical LED on GPIO4 flashes with each detected heartbeat.
 

@@ -356,15 +356,22 @@ void loop() {
       uint32_t beatTime = currentMillis;
       uint32_t ibi = beatTime - lastBeatTime; // Inter-Beat Interval in ms
       
-      // Filter out noise: Realistic human BPM is ~30 to ~200 (2000ms to 300ms)
-      if (ibi > 300 && ibi < 2000) {
-        currentBPM = 60000 / ibi; // Convert ms per beat to beats per minute
-        addRecord(currentBPM, currentRaw);
+      // Filter out noise: Only accept true human heart rate range
+      // Normal resting HR: 60-100 BPM | Exercise: up to ~150-180 BPM
+      // IBI range: 333ms (180 BPM) to 1200ms (50 BPM)
+      if (ibi > 333 && ibi < 1200) {
+        int computedBPM = 60000 / ibi; // Convert ms per beat to beats per minute
         
-        Serial.printf("[PULSE] Peak! Raw: %d | BPM: %d\n", currentRaw, currentBPM);
-        
-        // Flash LED to the heartbeat
-        digitalWrite(LED_PIN, HIGH);
+        // Secondary validation: Only accept BPM within true human range (50-180)
+        if (computedBPM >= 50 && computedBPM <= 180) {
+          currentBPM = computedBPM;
+          addRecord(currentBPM, currentRaw);
+          
+          Serial.printf("[PULSE] Peak! Raw: %d | BPM: %d\n", currentRaw, currentBPM);
+          
+          // Flash LED to the heartbeat
+          digitalWrite(LED_PIN, HIGH);
+        }
       }
       
       lastBeatTime = beatTime;
