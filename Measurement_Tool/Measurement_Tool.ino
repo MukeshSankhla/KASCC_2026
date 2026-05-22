@@ -180,12 +180,13 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 </header>
 <div class="college-info">
   <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
-  <div class="ci-proj">Project: Measurement Tool using ESP8266 &amp; Ultrasonic Sensor</div>
+  <div class="ci-proj">Project: smart Distance system using Ultrasonic Sensor and NodeMCU ESP8266; Ultrasonic Sensor</div>
   <div class="ci-team">
-    <b>Rahul Sharma</b> <span class="roll">(Roll No. 2024CS101)</span> &bull;
-    <b>Priya Patil</b> <span class="roll">(Roll No. 2024CS102)</span> &bull;
-    <b>Amit Kumar</b> <span class="roll">(Roll No. 2024CS103)</span> &bull;
-    <b>Sneha Reddy</b> <span class="roll">(Roll No. 2024CS104)</span>
+    <b>Sumati</b> <span class="Bsc 6th sem">(Roll No. U27RE23S0114)</span> &bull;
+    <b>Shilpa</b> <span class="Bsc 6th sem">(Roll No. U27RE23S0097)</span> &bull;
+    <b>Vaishnavi</b> <span class="Bsc 6th sem">(Roll No. U27RE23S0144)</span> &bull;
+    <b>Adnan</b> <span class="Bsc 6th sem">(Roll No. U27RE23S0001)</span>
+    <b>Kishansingh </b> <span class="Bsc 6th sem">(Roll No. U27RE23S0027)</span>
   </div>
 </div>
 <div class="status-bar">
