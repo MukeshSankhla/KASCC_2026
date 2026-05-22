@@ -287,10 +287,12 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
   <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
   <div class="ci-proj">Project: Weather Station using ESP8266 &amp; DHT11 Sensor</div>
   <div class="ci-team">
-    <b>Rahul Sharma</b> <span class="roll">(Roll No. 2024CS101)</span> &bull;
-    <b>Priya Patil</b> <span class="roll">(Roll No. 2024CS102)</span> &bull;
-    <b>Amit Kumar</b> <span class="roll">(Roll No. 2024CS103)</span> &bull;
-    <b>Sneha Reddy</b> <span class="roll">(Roll No. 2024CS104)</span>
+    <b>pooja </b> <span class="roll">(Roll No.  239)</span> &bull;
+    <b>bhavani </b> <span class="roll">(Roll No. 195)</span> &bull;
+    <b>saniya tabassum </b> <span class="roll">(Roll No. 406)</span> &bull;
+    <b>appu patil </b> <span class="roll">(Roll No. 354)</span> &bull;
+    <b>abhishek ashture </b> <span class="roll">(Roll No. 155)</span> &bull;
+    <b>stephen </b> <span class="roll">(Roll No. 163)</span> &bull;
   </div>
 </div>
 
