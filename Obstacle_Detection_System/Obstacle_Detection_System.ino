@@ -208,10 +208,12 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
   <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
   <div class="ci-proj">Project: Smart Blind Stick using ESP8266 &amp; Ultrasonic Sensor</div>
   <div class="ci-team">
-    <b>Rahul Sharma</b> <span class="roll">(Roll No. 2024CS101)</span> &bull;
-    <b>Priya Patil</b> <span class="roll">(Roll No. 2024CS102)</span> &bull;
-    <b>Amit Kumar</b> <span class="roll">(Roll No. 2024CS103)</span> &bull;
-    <b>Sneha Reddy</b> <span class="roll">(Roll No. 2024CS104)</span>
+    <b>shivakumar</b> <span class="roll">(Roll No. U27RE23S0212)</span> &bull;
+    <b>MAHESH</b> <span class="roll">(Roll No. U27RE23S0347 )</span> &bull;
+    <b>KAVYA</b> <span class="roll">(Roll No.U27RE23S0264 )</span> &bull;
+    <b>OM </b> <span class="roll">(Roll No. U27RE23S0402)</span> &bull;
+    <b>ARUNKUMAR</b> <span class="roll">(Roll No. U27RE23S0174)</span> &bull;
+    <b>SHWETA</b> <span class="roll">(Roll No. U27RE23S0203)</span>
   </div>
 </div>
 <div class="status-bar">
