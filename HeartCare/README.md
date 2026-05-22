@@ -218,6 +218,28 @@ The table below maps the NodeMCU board pins to the ESP8266's internal GPIO pin d
 | **3V3**   | 3.3V VCC | Sensor Power Supply | Stable 3.3V output from the onboard regulator. |
 | **GND**   | Ground   | Common System Ground | Common ground reference. |
 
+### Technical Capabilities of ESP8266
+* **Processor Core**: Tensilica Xtensa 32-bit LX106 RISC CPU, operating at 80 MHz (can be overclocked to 160 MHz). It delivers up to 645 DMIPS of processing power.
+* **Memory Subsystem**: 80 KB of Instruction/Data SRAM, plus support for up to 16 MB of external SPI flash memory (typically 4 MB on NodeMCU boards) to store firmware, assets, and file systems.
+* **Integrated Wi-Fi Stack**: Built-in 802.11 b/g/n Wi-Fi transceiver running at 2.4 GHz. It supports WEP, WPA/WPA2 Personal/Enterprise security protocols. It includes an integrated TR switch, balun, LNA, power amplifier, and matching network.
+* **Low-Power Modes**: Supports three sleep configurations to conserve power in battery-operated nodes:
+  - **Modem Sleep** (~15 mA): CPU remains active, Wi-Fi radio is powered down between beacon intervals.
+  - **Light Sleep** (~0.9 mA): CPU clock is gated, Wi-Fi radio is off. The chip wakes up on external interrupts.
+  - **Deep Sleep** (~20 µA): Only the internal Real-Time Clock (RTC) remains active. The chip resets on wake-up (GPIO16/D0 connected to RST).
+* **Hardware Peripherals**: Features 17 GPIO pins, hardware PWM (Pulse-Width Modulation), SPI, I2C, I2S, UART interfaces, and a 10-bit analog-to-digital converter (ADC).
+
+### Real-World Applications
+1. **Smart Home Automation**: Wireless control of smart plugs, lighting fixtures, appliances, and automated blinds.
+2. **Environmental Tracking**: Standalone weather stations, air quality monitors, and greenhouse climate controls.
+3. **Wearable Health Monitors**: Portable pulse, step, and temperature trackers that transmit telemetry to local displays or remote apps.
+4. **Precision Agriculture**: Remote soil moisture, ambient light, and irrigation control systems for farm management.
+
+### Industrial Usecases
+1. **Predictive Maintenance**: Monitoring vibration and temperature of machinery, logging telemetry, and reporting anomalies before failure occurs.
+2. **Industrial IoT Gateways**: Bridging legacy serial protocol devices (RS-232/RS-485) to local Wi-Fi networks or MQTT brokers.
+3. **Asset Tracking & Logistics**: Monitoring temperature, humidity, and location of sensitive shipments inside warehouses and transport containers.
+4. **Remote Telemetry & SCADA**: Wireless transmission of tank levels, pressure values, and power consumption statistics to industrial SCADA systems.
+
 ---
 
 ## 8. In-Depth about the Project-Specific Sensor: Optical Pulse Probe
@@ -383,6 +405,40 @@ void loop() {
 }
 ```
 
+### Program Flow Diagram
+The flowchart below shows the logic of the firmware program:
+
+```mermaid
+graph TD
+    A[Start NodeMCU] --> B[Configure GPIO: LED_PIN Output, A0 Input]
+    B --> C[Initialize Serial @ 9600 Baud]
+    C --> D[Configure Soft AP: HeartCare_AP, IP: 192.168.4.1]
+    D --> E[Register Server Hooks: /, /live, /history]
+    E --> F[Start HTTP Web Server on Port 80]
+    F --> G[Enter Loop Phase]
+    G --> H[Call server.handleClient to handle web requests]
+    H --> I{Is 10ms Sample Interval Met?}
+    I -->|No| M[Yield control to ESP8266 background system]
+    I -->|Yes| J[Read Analog Pin A0]
+    J --> K{Is raw value > threshold 550 & belowThreshold is true?}
+    K -->|Yes| L[Set lastBeatTime, set belowThreshold = false]
+    L --> N[Calculate IBI = currentMillis - lastBeatTime]
+    N --> O{Is 333ms < IBI < 1200ms?}
+    O -->|Yes| P[Calculate BPM = 60000 / IBI]
+    P --> Q[Save BPM and Raw to circular history array]
+    Q --> R[Flash Status LED High]
+    R --> S{Has 3s elapsed since last beat?}
+    O -->|No| S
+    K -->|No| T{Is raw value < threshold - 30?}
+    T -->|Yes| U[Set belowThreshold = true, Turn off LED]
+    T -->|No| S
+    U --> S
+    S -->|Yes| V[Set BPM to 0, Set status to No Finger]
+    S -->|No| M
+    V --> M
+    M --> G
+```
+
 ---
 
 ## 12. Working
@@ -438,40 +494,3 @@ The HeartCare system provides an affordable, standalone solution for real-time h
 1. **Blood Oxygen SpO2**: Upgrade to a MAX30102 sensor module to measure both heart rate and blood oxygen saturation (SpO2) using red and infrared LEDs.
 2. **Cloud Integration**: Add Station Mode capability to allow the device to connect to a local router and upload measurements to a secure health database.
 3. **Rechargeable Battery**: Mount the system in a custom 3D-printed enclosure with a rechargeable Li-Ion battery for fully portable monitoring.
-
----
-
-## 14. Flow Diagram
-
-The flowchart below shows the logic of the firmware program:
-
-```mermaid
-graph TD
-    A[Start NodeMCU] --> B[Configure GPIO: LED_PIN Output, A0 Input]
-    B --> C[Initialize Serial @ 9600 Baud]
-    C --> D[Configure Soft AP: HeartCare_AP, IP: 192.168.4.1]
-    D --> E[Register Server Hooks: /, /live, /history]
-    E --> F[Start HTTP Web Server on Port 80]
-    F --> G[Enter Loop Phase]
-    G --> H[Call server.handleClient to handle web requests]
-    H --> I{Is 10ms Sample Interval Met?}
-    I -->|No| M[Yield control to ESP8266 background system]
-    I -->|Yes| J[Read Analog Pin A0]
-    J --> K{Is raw value > threshold 550 & belowThreshold is true?}
-    K -->|Yes| L[Set lastBeatTime, set belowThreshold = false]
-    L --> N[Calculate IBI = currentMillis - lastBeatTime]
-    N --> O{Is 333ms < IBI < 1200ms?}
-    O -->|Yes| P[Calculate BPM = 60000 / IBI]
-    P --> Q[Save BPM and Raw to circular history array]
-    Q --> R[Flash Status LED High]
-    R --> S{Has 3s elapsed since last beat?}
-    O -->|No| S
-    K -->|No| T{Is raw value < threshold - 30?}
-    T -->|Yes| U[Set belowThreshold = true, Turn off LED]
-    T -->|No| S
-    U --> S
-    S -->|Yes| V[Set BPM to 0, Set status to No Finger]
-    S -->|No| M
-    V --> M
-    M --> G
-```

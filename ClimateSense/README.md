@@ -219,6 +219,28 @@ The table below maps the NodeMCU board pins to the ESP8266's internal GPIO pin d
 | **3V3**   | 3.3V VCC | Sensor Power Supply | Stable 3.3V output from the onboard regulator. |
 | **GND**   | Ground   | Common System Ground | Common ground reference. |
 
+### Technical Capabilities of ESP8266
+* **Processor Core**: Tensilica Xtensa 32-bit LX106 RISC CPU, operating at 80 MHz (can be overclocked to 160 MHz). It delivers up to 645 DMIPS of processing power.
+* **Memory Subsystem**: 80 KB of Instruction/Data SRAM, plus support for up to 16 MB of external SPI flash memory (typically 4 MB on NodeMCU boards) to store firmware, assets, and file systems.
+* **Integrated Wi-Fi Stack**: Built-in 802.11 b/g/n Wi-Fi transceiver running at 2.4 GHz. It supports WEP, WPA/WPA2 Personal/Enterprise security protocols. It includes an integrated TR switch, balun, LNA, power amplifier, and matching network.
+* **Low-Power Modes**: Supports three sleep configurations to conserve power in battery-operated nodes:
+  - **Modem Sleep** (~15 mA): CPU remains active, Wi-Fi radio is powered down between beacon intervals.
+  - **Light Sleep** (~0.9 mA): CPU clock is gated, Wi-Fi radio is off. The chip wakes up on external interrupts.
+  - **Deep Sleep** (~20 µA): Only the internal Real-Time Clock (RTC) remains active. The chip resets on wake-up (GPIO16/D0 connected to RST).
+* **Hardware Peripherals**: Features 17 GPIO pins, hardware PWM (Pulse-Width Modulation), SPI, I2C, I2S, UART interfaces, and a 10-bit analog-to-digital converter (ADC).
+
+### Real-World Applications
+1. **Smart Home Automation**: Wireless control of smart plugs, lighting fixtures, appliances, and automated blinds.
+2. **Environmental Tracking**: Standalone weather stations, air quality monitors, and greenhouse climate controls.
+3. **Wearable Health Monitors**: Portable pulse, step, and temperature trackers that transmit telemetry to local displays or remote apps.
+4. **Precision Agriculture**: Remote soil moisture, ambient light, and irrigation control systems for farm management.
+
+### Industrial Usecases
+1. **Predictive Maintenance**: Monitoring vibration and temperature of machinery, logging telemetry, and reporting anomalies before failure occurs.
+2. **Industrial IoT Gateways**: Bridging legacy serial protocol devices (RS-232/RS-485) to local Wi-Fi networks or MQTT brokers.
+3. **Asset Tracking & Logistics**: Monitoring temperature, humidity, and location of sensitive shipments inside warehouses and transport containers.
+4. **Remote Telemetry & SCADA**: Wireless transmission of tank levels, pressure values, and power consumption statistics to industrial SCADA systems.
+
 ---
 
 ## 8. In-Depth about the Project-Specific Sensor: DHT11
@@ -253,8 +275,8 @@ The DHT11 communicates using a custom single-wire protocol over a single data li
    - **Byte 4**: Temperature (decimal part, always 0 on DHT11)
    - **Byte 5**: Checksum (the sum of bytes 1, 2, 3, and 4)
 4. **Bit Coding**:
-   - A logic **0** is sent as a 50 $\mu$s Low pulse followed by a 26-28 $\mu$s High pulse.
-   - A logic **1** is sent as a 50 $\mu$s Low pulse followed by a 70 $\mu$s High pulse.
+    - A logic **0** is sent as a $50\ \mu\text{s}$ Low pulse followed by a $26\text{–}28\ \mu\text{s}$ High pulse.
+    - A logic **1** is sent as a $50\ \mu\text{s}$ Low pulse followed by a $70\ \mu\text{s}$ High pulse.
 
 ### Heat Index Mathematics
 The Heat Index (HI) measures how hot it feels when relative humidity is factored in with the actual air temperature. The National Weather Service uses the **Rothfusz Regression Equation**:
@@ -380,6 +402,31 @@ void loop() {
   }
   yield(); // Allow background WiFi tasks to run
 }
+
+### Program Flow Diagram
+The flowchart below shows the logic of the firmware program:
+
+```mermaid
+graph TD
+    A[Start NodeMCU] --> B[Configure GPIO: LED_PIN Output, DHTPIN Bi-directional]
+    B --> C[Initialize Serial @ 9600 Baud]
+    C --> D[Configure Soft AP: ClimateSense_AP, IP: 192.168.4.1]
+    D --> E[Register Server Hooks: /, /live, /history]
+    E --> F[Start HTTP Web Server on Port 80]
+    F --> G[Enter Loop Phase]
+    G --> H[Call server.handleClient to handle web requests]
+    H --> I{Is 5s Sample Interval Met?}
+    I -->|No| M[Yield control to ESP8266 background system]
+    I -->|Yes| J[Read DHT11 Temperature & Humidity]
+    J --> K{Is Read Successful?}
+    K -->|No| M
+    K -->|Yes| L[Calculate Temperature in Fahrenheit]
+    L --> N[Compute Heat Index via Rothfusz Regression]
+    N --> O[Convert Heat Index back to Celsius]
+    O --> P[Save Temp, Hum, Heat Index, and Time to Circular History Array]
+    P --> Q[Blink Status LED for 100ms]
+    Q --> M
+    M --> G
 ```
 
 ---
@@ -436,32 +483,3 @@ The ClimateSense weather station provides an affordable, self-contained solution
 1. **High-Accuracy Sensor**: Upgrade to a DHT22 sensor, which measures a wider temperature range ($-40^\circ\text{C}\text{ to }80^\circ\text{C}$ with $\pm 0.5^\circ\text{C}$ accuracy) and relative humidity with decimal precision.
 2. **External Storage**: Add an SD card module to log data locally for long-term climate analysis.
 3. **Power Optimization**: Implement sleep modes to conserve battery life in portable setups.
-
----
-
-## 14. Flow Diagram
-
-The flowchart below shows the logic of the firmware program:
-
-```mermaid
-graph TD
-    A[Start NodeMCU] --> B[Configure GPIO: LED_PIN Output, DHTPIN Bi-directional]
-    B --> C[Initialize Serial @ 9600 Baud]
-    C --> D[Configure Soft AP: ClimateSense_AP, IP: 192.168.4.1]
-    D --> E[Register Server Hooks: /, /live, /history]
-    E --> F[Start HTTP Web Server on Port 80]
-    F --> G[Enter Loop Phase]
-    G --> H[Call server.handleClient to handle web requests]
-    H --> I{Is 5s Sample Interval Met?}
-    I -->|No| M[Yield control to ESP8266 background system]
-    I -->|Yes| J[Read DHT11 Temperature & Humidity]
-    J --> K{Is Read Successful?}
-    K -->|No| M
-    K -->|Yes| L[Calculate Temperature in Fahrenheit]
-    L --> N[Compute Heat Index via Rothfusz Regression]
-    N --> O[Convert Heat Index back to Celsius]
-    O --> P[Save Temp, Hum, Heat Index, and Time to Circular History Array]
-    P --> Q[Blink Status LED for 100ms]
-    Q --> M
-    M --> G
-```

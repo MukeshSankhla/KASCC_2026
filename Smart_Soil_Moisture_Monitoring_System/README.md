@@ -215,6 +215,28 @@ The table below maps the NodeMCU board pins to the ESP8266's internal GPIO pin d
 | **3V3**   | 3.3V VCC | Sensor Power Supply | Stable 3.3V output from the onboard regulator. |
 | **GND**   | Ground   | Common System Ground | Common ground reference. |
 
+### Technical Capabilities of ESP8266
+* **Processor Core**: Tensilica Xtensa 32-bit LX106 RISC CPU, operating at 80 MHz (can be overclocked to 160 MHz). It delivers up to 645 DMIPS of processing power.
+* **Memory Subsystem**: 80 KB of Instruction/Data SRAM, plus support for up to 16 MB of external SPI flash memory (typically 4 MB on NodeMCU boards) to store firmware, assets, and file systems.
+* **Integrated Wi-Fi Stack**: Built-in 802.11 b/g/n Wi-Fi transceiver running at 2.4 GHz. It supports WEP, WPA/WPA2 Personal/Enterprise security protocols. It includes an integrated TR switch, balun, LNA, power amplifier, and matching network.
+* **Low-Power Modes**: Supports three sleep configurations to conserve power in battery-operated nodes:
+  - **Modem Sleep** (~15 mA): CPU remains active, Wi-Fi radio is powered down between beacon intervals.
+  - **Light Sleep** (~0.9 mA): CPU clock is gated, Wi-Fi radio is off. The chip wakes up on external interrupts.
+  - **Deep Sleep** (~20 µA): Only the internal Real-Time Clock (RTC) remains active. The chip resets on wake-up (GPIO16/D0 connected to RST).
+* **Hardware Peripherals**: Features 17 GPIO pins, hardware PWM (Pulse-Width Modulation), SPI, I2C, I2S, UART interfaces, and a 10-bit analog-to-digital converter (ADC).
+
+### Real-World Applications
+1. **Smart Home Automation**: Wireless control of smart plugs, lighting fixtures, appliances, and automated blinds.
+2. **Environmental Tracking**: Standalone weather stations, air quality monitors, and greenhouse climate controls.
+3. **Wearable Health Monitors**: Portable pulse, step, and temperature trackers that transmit telemetry to local displays or remote apps.
+4. **Precision Agriculture**: Remote soil moisture, ambient light, and irrigation control systems for farm management.
+
+### Industrial Usecases
+1. **Predictive Maintenance**: Monitoring vibration and temperature of machinery, logging telemetry, and reporting anomalies before failure occurs.
+2. **Industrial IoT Gateways**: Bridging legacy serial protocol devices (RS-232/RS-485) to local Wi-Fi networks or MQTT brokers.
+3. **Asset Tracking & Logistics**: Monitoring temperature, humidity, and location of sensitive shipments inside warehouses and transport containers.
+4. **Remote Telemetry & SCADA**: Wireless transmission of tank levels, pressure values, and power consumption statistics to industrial SCADA systems.
+
 ---
 
 ## 8. In-Depth about the Project-Specific Sensor: Resistive Soil Probe
@@ -371,66 +393,7 @@ void loop() {
 }
 ```
 
----
-
-## 12. Working
-
-When the Soil Moisture Monitor is powered on, it runs through the following operational steps:
-
-```
-[ Power On ]
-     │
-     ▼
-[ Setup() Initialization ]
-     ├── Set PinModes: SENSOR_PIN (Input), LED_PIN (Output)
-     ├── Initialize Serial port @ 9600 Baud
-     ├── Configure Soft AP: SSID "AgriMonitor_AP", IP 192.168.4.1
-     └── Register API endpoints & start HTTP Server
-     │
-     ▼
-[ Loop() Main Execution ]
-     ├── Handle incoming web requests (server.handleClient())
-     └── Every 5 seconds:
-             ├── Read analog value from A0
-             ├── Map value to percentage & determine status
-             ├── Write reading to history buffer
-             └── Flash the indicator LED (100ms)
-     │
-     ▼
-[ User Interface Loop ]
-     ├── Client connects to "AgriMonitor_AP" and opens http://192.168.4.1
-     ├── Web page loads HTML, CSS, and JS from flash
-     └── JavaScript polls `/live` and `/history` every 5 seconds:
-             ├── Updates moisture and raw values
-             ├── Adjusts plant SVG leaves, stem, expressions, and droplets
-             └── Appends new rows to the history table
-```
-
-1. **Startup**: The CPU runs the `setup()` function to initialize the serial port, set pin directions, set up the WiFi Access Point with the specified IP address, and register the web server routes.
-2. **Measurement**: Every 5 seconds, the system reads the voltage on pin A0, maps it to a percentage, categorizes the soil condition, adds the record to history, and blinks the LED.
-3. **Web Server**: The web server waits for incoming connections. When a client requests the root URL (`/`), the server sends the HTML page stored in flash memory.
-4. **Dashboard Updates**: The JavaScript in the webpage polls the `/live` and `/history` JSON endpoints every 5 seconds. It updates the values on the page and adjusts the appearance of the SVG plant character based on the soil condition:
-   - **Bone Dry (< 15% Moisture)**: The plant stems and leaves droop, turning brown. The soil shows cracks, the plant face shows distress, and water drops disappear.
-   - **Needs Water (15 - 40% Moisture)**: Stems droop slightly, turning a lighter green-brown color. Water droplets animate falling down to indicate it needs water.
-   - **Moist & Healthy (40 - 75% Moisture)**: The plant stands upright, sways gently, and displays a smiling expression.
-   - **Waterlogged (>= 75% Moisture)**: Stems sway rapidly, and a water puddle with ripples appears at the base of the pot to show overflow.
-
----
-
-## 13. Conclusion
-
-### Project Evaluation
-The Smart Soil Moisture Monitoring System provides an affordable, standalone solution for precision irrigation. The real-time web dashboard uses a clear, animated plant character to communicate soil conditions, making it easy for users to decide when to water crops without needing to interpret technical numbers.
-
-### Future Improvements
-1. **Capacitive Sensor**: Upgrade to a capacitive soil moisture sensor probe. Capacitive probes do not expose metal electrodes directly to the soil, preventing corrosion and extending the sensor's lifespan.
-2. **Automated Irrigation**: Connect a relay module to control a 5V solenoid water valve or mini water pump, turning the system into an automated irrigation controller that waters plants only when the moisture drops below a set threshold.
-3. **Low-Power Modes**: Implement low-power deep sleep modes to run the device off batteries for long-term measurements in agricultural fields.
-
----
-
-## 14. Flow Diagram
-
+### Program Flow Diagram
 The flowchart below shows the logic of the firmware program:
 
 ```mermaid
@@ -452,3 +415,30 @@ graph TD
     O --> M
     M --> G
 ```
+
+---
+
+## 12. Working
+
+When the Soil Moisture Monitor is powered on, it runs through the following operational steps:
+
+1. **Boot Sequence**: When powered on, the ESP8266 sets D2 as an output, initializes the serial port, sets up the WiFi Access Point with the SSID `AgriMonitor_AP`, and starts the HTTP server on port 80.
+2. **Measurement**: Every 5 seconds, the system reads the voltage on pin A0, maps it to a percentage, categorizes the soil condition, adds the record to history, and blinks the LED.
+3. **Web Server**: The web server waits for incoming connections. When a client requests the root URL (`/`), the server sends the HTML page stored in flash memory.
+4. **Dashboard Updates**: The JavaScript in the webpage polls the `/live` and `/history` JSON endpoints every 5 seconds. It updates the values on the page and adjusts the appearance of the SVG plant character based on the soil condition:
+   - **Bone Dry (< 15% Moisture)**: The plant stems and leaves droop, turning brown. The soil shows cracks, the plant face shows distress, and water drops disappear.
+   - **Needs Water (15 - 40% Moisture)**: Stems droop slightly, turning a lighter green-brown color. Water droplets animate falling down to indicate it needs water.
+   - **Moist & Healthy (40 - 75% Moisture)**: The plant stands upright, sways gently, and displays a smiling expression.
+   - **Waterlogged (>= 75% Moisture)**: Stems sway rapidly, and a water puddle with ripples appears at the base of the pot to show overflow.
+
+---
+
+## 13. Conclusion
+
+### Project Evaluation
+The Smart Soil Moisture Monitoring System provides an affordable, standalone solution for precision irrigation. The real-time web dashboard uses a clear, animated plant character to communicate soil conditions, making it easy for users to decide when to water crops without needing to interpret technical numbers.
+
+### Future Improvements
+1. **Capacitive Sensor**: Upgrade to a capacitive soil moisture sensor probe. Capacitive probes do not expose metal electrodes directly to the soil, preventing corrosion and extending the sensor's lifespan.
+2. **Automated Irrigation**: Connect a relay module to control a 5V solenoid water valve or mini water pump, turning the system into an automated irrigation controller that waters plants only when the moisture drops below a set threshold.
+3. **Low-Power Modes**: Implement low-power deep sleep modes to run the device off batteries for long-term measurements in agricultural fields.

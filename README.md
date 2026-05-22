@@ -6,15 +6,15 @@ A collection of **7 hands-on IoT projects** built with the ESP8266 (NodeMCU) mic
 
 ## 📂 Projects Overview
 
-| # | Project Title | Relevant SDG(s) | Code & Docs | Circuit Connection |
-|---|---------------|-----------------|-------------|--------------------|
-| 1 | **Smart Distance Monitoring System** using Ultrasonic Sensor and NodeMCU ESP8266 | 🏗️ **SDG 9**: Industry, Innovation & Infrastructure<br>🏙️ **SDG 11**: Sustainable Cities & Communities | [Smart_Distance_Monitoring_System](./Smart_Distance_Monitoring_System/) | [Circuit Diagram](./images/smart_distance_monitoring_system.png) |
-| 2 | **IoT-Based Ambient Light Intensity Analyzer** using NodeMCU | ⚡ **SDG 7**: Affordable & Clean Energy<br>🌍 **SDG 13**: Climate Action | [Ambient_Light_Intensity_Analyzer](./Ambient_Light_Intensity_Analyzer/) | [Circuit Diagram](./images/ambient_light_intensity_analyzer.png) |
-| 3 | **Smart Soil Moisture Monitoring System for Precision Irrigation** | 🌾 **SDG 2**: Zero Hunger<br>💧 **SDG 6**: Clean Water & Sanitation | [Smart_Soil_Moisture_Monitoring_System](./Smart_Soil_Moisture_Monitoring_System/) | [Circuit Diagram](./images/smart_soil_moisture_monitoring_system.png) |
-| 4 | **ClimateSense**: IoT Temperature & Humidity Monitoring using DHT11 | 🏙️ **SDG 11**: Sustainable Cities & Communities<br>🌍 **SDG 13**: Climate Action | [ClimateSense](./ClimateSense/) | [Circuit Diagram](./images/climatesense.png) |
-| 5 | **IoT Obstacle Detection and Alert System** using IR Sensor | 🏥 **SDG 3**: Good Health & Well-Being<br>🏗️ **SDG 9**: Industry, Innovation & Infrastructure | [IoT_Obstacle_Detection_System](./IoT_Obstacle_Detection_System/) | [Circuit Diagram](./images/iot_obstacle_detection_system.png) |
-| 6 | **HeartCare**: IoT Heart Beat Monitoring and Visualization System | 🏥 **SDG 3**: Good Health & Well-Being | [HeartCare](./HeartCare/) | [Circuit Diagram](./images/heartcare.png) |
-| 7 | **Smart Motion Radar** with Servo Rotation using Ultrasonic Sensor and NodeMCU | 🏗️ **SDG 9**: Industry, Innovation & Infrastructure<br>🏙️ **SDG 11**: Sustainable Cities & Communities | [Smart_Motion_Radar](./Smart_Motion_Radar/) | [Circuit Diagram](./images/smart_motion_radar.png) |
+| # | Project Title | Relevant SDG(s) | Code & Docs |
+|---|---------------|-----------------|-------------|
+| 1 | **Smart Distance Monitoring System** using Ultrasonic Sensor and NodeMCU ESP8266 | 🏗️ **SDG 9**: Industry, Innovation & Infrastructure<br>🏙️ **SDG 11**: Sustainable Cities & Communities | [Smart_Distance_Monitoring_System](./Smart_Distance_Monitoring_System/) |
+| 2 | **IoT-Based Ambient Light Intensity Analyzer** using NodeMCU | ⚡ **SDG 7**: Affordable & Clean Energy<br>🌍 **SDG 13**: Climate Action | [Ambient_Light_Intensity_Analyzer](./Ambient_Light_Intensity_Analyzer/) |
+| 3 | **Smart Soil Moisture Monitoring System for Precision Irrigation** | 🌾 **SDG 2**: Zero Hunger<br>💧 **SDG 6**: Clean Water & Sanitation | [Smart_Soil_Moisture_Monitoring_System](./Smart_Soil_Moisture_Monitoring_System/) |
+| 4 | **ClimateSense**: IoT Temperature & Humidity Monitoring using DHT11 | 🏙️ **SDG 11**: Sustainable Cities & Communities<br>🌍 **SDG 13**: Climate Action | [ClimateSense](./ClimateSense/) |
+| 5 | **IoT Obstacle Detection and Alert System** using IR Sensor | 🏥 **SDG 3**: Good Health & Well-Being<br>🏗️ **SDG 9**: Industry, Innovation & Infrastructure | [IoT_Obstacle_Detection_System](./IoT_Obstacle_Detection_System/) |
+| 6 | **HeartCare**: IoT Heart Beat Monitoring and Visualization System | 🏥 **SDG 3**: Good Health & Well-Being | [HeartCare](./HeartCare/) |
+| 7 | **Smart Motion Radar** with Servo Rotation using Ultrasonic Sensor and NodeMCU | 🏗️ **SDG 9**: Industry, Innovation & Infrastructure<br>🏙️ **SDG 11**: Sustainable Cities & Communities | [Smart_Motion_Radar](./Smart_Motion_Radar/) |
 
 ---
 
@@ -57,9 +57,8 @@ The NodeMCU uses a **CP2102 / CP2104** USB-to-Serial chip. Your computer needs i
 
 The Arduino IDE doesn't support ESP8266 by default. You need to add it via the Board Manager.
 
-1. Open **Arduino IDE**
-2. Go to **File → Preferences** (or `Ctrl + ,`)
-3. In the **"Additional Board Manager URLs"** field, paste this URL:
+1. Go to **File → Preferences** (or `Ctrl + ,`)
+2. In the **"Additional Board Manager URLs"** field, paste this URL:
 
 ```
 https://arduino.esp8266.com/stable/package_esp8266com_index.json
@@ -67,11 +66,11 @@ https://arduino.esp8266.com/stable/package_esp8266com_index.json
 
 > If you already have other URLs there, separate them with a comma.
 
-4. Click **OK**
-5. Go to **Tools → Board → Boards Manager...**
-6. Search for **"esp8266"**
-7. Find **"esp8266 by ESP8266 Community"** and click **Install**
-8. Wait for the installation to complete (this may take a few minutes)
+3. Click **OK**
+4. Go to **Tools → Board → Boards Manager...**
+5. Search for **"esp8266"**
+6. Find **"esp8266 by ESP8266 Community"** and click **Install**
+7. Wait for the installation to complete (this may take a few minutes)
 
 **Configure Board Settings:**
 
@@ -120,16 +119,27 @@ Some projects require external libraries. Install them via the **Library Manager
 
 ## 📡 How to Use the Web Dashboards
 
-Most projects in this collection create a **WiFi Access Point** (AP) that you connect to with your phone or laptop:
+Each project acts as an offline, standalone **Wi-Fi Access Point** (AP) that hosts its own dashboard.
 
-1. **Upload** the sketch to NodeMCU
-2. On your phone/laptop, go to **WiFi Settings**
-3. Connect to the WiFi network shown in the project (e.g., `HeartMonitor_AP`)
-4. Password for all projects: **`12345678`**
-5. Open a browser and navigate to: **`http://192.168.4.1`**
-6. The live dashboard will load with real-time sensor data and animations
+1. **Upload** the sketch to the NodeMCU board.
+2. On your phone, tablet, or laptop, open your **Wi-Fi Settings**.
+3. Scan for networks and connect to the specific project's network (SSID):
+   
+   | # | Project Name | Wi-Fi Access Point SSID | Password | IP Address |
+   |---|--------------|-------------------------|----------|------------|
+   | 1 | Smart Distance Monitoring System | `MeasureTool_AP` | `12345678` | `192.168.4.1` |
+   | 2 | Ambient Light Intensity Analyzer | `LuxMeter_AP` | `12345678` | `192.168.4.1` |
+   | 3 | Smart Soil Moisture Monitoring System | `AgriMonitor_AP` | `12345678` | `192.168.4.1` |
+   | 4 | ClimateSense | `ClimateSense_AP` | `12345678` | `192.168.4.1` |
+   | 5 | IoT Obstacle Detection & Alert System | `ObstacleAlert_AP` | `12345678` | `192.168.4.1` |
+   | 6 | HeartCare | `HeartCare_AP` | `12345678` | `192.168.4.1` |
+   | 7 | Smart Motion Radar | `SmartRadar_AP` | `12345678` | `192.168.4.1` |
 
-> **No internet required!** The ESP8266 acts as a standalone access point and web server. Everything runs locally.
+4. When prompted, enter the password: **`12345678`**
+5. Open your web browser and navigate to: **`http://192.168.4.1`**
+6. The interactive web dashboard will load with live telemetry and visualizations.
+
+> **No Internet Connection Required!** The ESP8266 acts as a self-contained local server. Everything runs directly on the hardware.
 
 ---
 

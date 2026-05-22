@@ -222,10 +222,32 @@ The table below lists the physical board pins, their internal ESP8266 GPIO mappi
 | Board Pin | GPIO Pin | Function in This Project | Electrical Characteristics |
 |-----------|----------|--------------------------|----------------------------|
 | **D2**    | GPIO4    | Servo PWM Output | 3.3V digital output. Outputs a 50Hz PWM wave to control the servo angle. |
-| **D5**    | GPIO14   | Trigger Output (TRIG) | 3.3V digital output. Sends a 10$\mu$s start pulse to the HC-SR04. |
+| **D5**    | GPIO14   | Trigger Output (TRIG) | 3.3V digital output. Sends a $10\ \mu\text{s}$ start pulse to the HC-SR04. |
 | **D6**    | GPIO12   | Echo Input (ECHO) | 3.3V digital input. Receives the returning pulse (via a voltage divider). |
 | **VIN**   | Vin      | 5V Power Supply | Supplies 5V power directly from the USB connector to drive the servo and sensor. |
 | **GND**   | Ground   | Ground Reference | Common system ground. |
+
+### Technical Capabilities of ESP8266
+* **Processor Core**: Tensilica Xtensa 32-bit LX106 RISC CPU, operating at 80 MHz (can be overclocked to 160 MHz). It delivers up to 645 DMIPS of processing power.
+* **Memory Subsystem**: 80 KB of Instruction/Data SRAM, plus support for up to 16 MB of external SPI flash memory (typically 4 MB on NodeMCU boards) to store firmware, assets, and file systems.
+* **Integrated Wi-Fi Stack**: Built-in 802.11 b/g/n Wi-Fi transceiver running at 2.4 GHz. It supports WEP, WPA/WPA2 Personal/Enterprise security protocols. It includes an integrated TR switch, balun, LNA, power amplifier, and matching network.
+* **Low-Power Modes**: Supports three sleep configurations to conserve power in battery-operated nodes:
+  - **Modem Sleep** (~15 mA): CPU remains active, Wi-Fi radio is powered down between beacon intervals.
+  - **Light Sleep** (~0.9 mA): CPU clock is gated, Wi-Fi radio is off. The chip wakes up on external interrupts.
+  - **Deep Sleep** (~20 µA): Only the internal Real-Time Clock (RTC) remains active. The chip resets on wake-up (GPIO16/D0 connected to RST).
+* **Hardware Peripherals**: Features 17 GPIO pins, hardware PWM (Pulse-Width Modulation), SPI, I2C, I2S, UART interfaces, and a 10-bit analog-to-digital converter (ADC).
+
+### Real-World Applications
+1. **Smart Home Automation**: Wireless control of smart plugs, lighting fixtures, appliances, and automated blinds.
+2. **Environmental Tracking**: Standalone weather stations, air quality monitors, and greenhouse climate controls.
+3. **Wearable Health Monitors**: Portable pulse, step, and temperature trackers that transmit telemetry to local displays or remote apps.
+4. **Precision Agriculture**: Remote soil moisture, ambient light, and irrigation control systems for farm management.
+
+### Industrial Usecases
+1. **Predictive Maintenance**: Monitoring vibration and temperature of machinery, logging telemetry, and reporting anomalies before failure occurs.
+2. **Industrial IoT Gateways**: Bridging legacy serial protocol devices (RS-232/RS-485) to local Wi-Fi networks or MQTT brokers.
+3. **Asset Tracking & Logistics**: Monitoring temperature, humidity, and location of sensitive shipments inside warehouses and transport containers.
+4. **Remote Telemetry & SCADA**: Wireless transmission of tank levels, pressure values, and power consumption statistics to industrial SCADA systems.
 
 ---
 
@@ -263,13 +285,13 @@ The speed of sound in dry air ($v$) varies with temperature ($T$ in $^\circ\text
 $$v = 331.3 + 0.606 \times T \text{ m/s}$$
 
 At a room temperature of $20^\circ\text{C}$, the speed of sound is:
-$$v = 331.3 + (0.606 \times 20) = 343.42 \text{ m/s} = 0.034342 \text{ cm/\mu s}$$
+$$v = 331.3 + (0.606 \times 20) = 343.42 \text{ m/s} = 0.034342 \text{ cm/}\mu\text{s}$$
 
 Since the sound wave has to travel to the obstacle and back to the sensor, the total distance ($d$) is half the total flight time:
 $$d = \frac{v \times t}{2}$$
 
 Substituting the speed of sound:
-$$d = \frac{0.03434 \text{ cm/\mu s} \times t\ \mu\text{s}}{2} = \frac{t}{58.24} \text{ cm}$$
+$$d = \frac{0.03434 \text{ cm/}\mu\text{s} \times t\ \mu\text{s}}{2} = \frac{t}{58.24} \text{ cm}$$
 
 #### Example Calculation:
 If the Echo pulse duration ($t$) is **$2915\ \mu\text{s}$**:
@@ -378,7 +400,7 @@ The table below lists the wiring connections between the servo motor, the ultras
 | **SG90 Servo** | GND (Brown) | GND | Common Ground | System ground connection. |
 | **SG90 Servo** | Signal (Orange) | D2 (GPIO4) | PWM Control | Receives the 50Hz position control signal. |
 | **HC-SR04** | VCC | VIN (5V) | Sensor Power Supply | Requires 5V power to generate the ultrasonic pulse. |
-| **HC-SR04** | TRIG | D5 (GPIO14) | Pulse Trigger | Receives the 10$\mu$s trigger signal from the micro. |
+| **HC-SR04** | TRIG | D5 (GPIO14) | Pulse Trigger | Receives the $10\ \mu\text{s}$ trigger signal from the micro. |
 | **HC-SR04** | ECHO | Connected to D6 (GPIO12) **via voltage divider** | Echo Duration | Outputs a 5V signal; must be scaled down to 3.3V. |
 | **HC-SR04** | GND | GND | Common Ground | Common ground reference. |
 
@@ -535,6 +557,36 @@ void loop() {
 }
 ```
 
+### Program Flow Diagram
+The flowchart below shows the logic of the firmware program:
+
+```mermaid
+graph TD
+    A[Start NodeMCU] --> B[Configure GPIO: TRIG Output, ECHO Input, SERVO PWM]
+    B --> C[Initialize Serial @ 9600 Baud]
+    C --> D[Attach Servo & Write Initial 15 Degrees]
+    D --> E[Initialize radarMap Array with 100cm]
+    E --> F[Configure Soft AP: SmartRadar_AP, IP: 192.168.4.1]
+    F --> G[Register Server Hooks: /, /data]
+    G --> H[Start HTTP Web Server on Port 80]
+    H --> I[Enter Loop Phase]
+    I --> J[Call server.handleClient to handle web requests]
+    J --> K{Is 40ms Sweep Interval Met?}
+    K -->|No| R[Yield control to ESP8266 system]
+    K -->|Yes| L[Trigger Ranging: 10us pulse on TRIG]
+    L --> M[Read Echo Duration on Pin D6]
+    M --> N[Calculate Distance: dist = duration * 0.0343 / 2]
+    N --> O[Map currentAngle to array: radarMap index = angle / 5]
+    O --> P[Find minimum value in array to set closestDist]
+    P --> Q[Write currentAngle to Servo Motor]
+    Q --> S[Increment currentAngle by sweepStep]
+    S --> T{Is currentAngle >= 165 or <= 15?}
+    T -->|Yes| U[Reverse direction: sweepStep = -sweepStep]
+    T -->|No| R
+    U --> R
+    R --> I
+```
+
 ---
 
 ## 12. Working
@@ -591,39 +643,6 @@ The Smart Motion Radar system provides a low-cost, effective solution for local 
 2. **LiDAR Integration**: Replace the ultrasonic sensor with a time-of-flight LiDAR sensor to improve angular resolution and detection range.
 3. **Pan-Tilt Tracking**: Integrate a camera mounted on a pan-tilt bracket. If an obstacle is detected in the hazard zone, the camera can automatically orient towards the target coordinates.
 4. **Cloud Integration**: Add Station Mode capability to allow the device to connect to local networks and upload data maps to central servers.
-
----
-
-## 14. Flow Diagram
-
-The flowchart below shows the logic of the firmware program:
-
-```mermaid
-graph TD
-    A[Start NodeMCU] --> B[Configure GPIO: TRIG Output, ECHO Input, SERVO PWM]
-    B --> C[Initialize Serial @ 9600 Baud]
-    C --> D[Attach Servo & Write Initial 15 Degrees]
-    D --> E[Initialize radarMap Array with 100cm]
-    E --> F[Configure Soft AP: SmartRadar_AP, IP: 192.168.4.1]
-    F --> G[Register Server Hooks: /, /data]
-    G --> H[Start HTTP Web Server on Port 80]
-    H --> I[Enter Loop Phase]
-    I --> J[Call server.handleClient to handle web requests]
-    J --> K{Is 40ms Sweep Interval Met?}
-    K -->|No| R[Yield control to ESP8266 system]
-    K -->|Yes| L[Trigger Ranging: 10us pulse on TRIG]
-    L --> M[Read Echo Duration on Pin D6]
-    M --> N[Calculate Distance: dist = duration * 0.0343 / 2]
-    N --> O[Map currentAngle to array: radarMap index = angle / 5]
-    O --> P[Find minimum value in array to set closestDist]
-    P --> Q[Write currentAngle to Servo Motor]
-    Q --> S[Increment currentAngle by sweepStep]
-    S --> T{Is currentAngle >= 165 or <= 15?}
-    T -->|Yes| U[Reverse direction: sweepStep = -sweepStep]
-    T -->|No| R
-    U --> R
-    R --> I
-```
 
 ---
 

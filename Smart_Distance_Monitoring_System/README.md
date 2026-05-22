@@ -218,6 +218,28 @@ The NodeMCU break out the ESP8266EX pins to a user-friendly dual-inline package 
 | **GND**          | Ground           | Common system ground |
 | **Vin**          | USB 5V Rail      | High-current 5V supply for HC-SR04 sensor |
 
+### Technical Capabilities of ESP8266
+* **Processor Core**: Tensilica Xtensa 32-bit LX106 RISC CPU, operating at 80 MHz (can be overclocked to 160 MHz). It delivers up to 645 DMIPS of processing power.
+* **Memory Subsystem**: 80 KB of Instruction/Data SRAM, plus support for up to 16 MB of external SPI flash memory (typically 4 MB on NodeMCU boards) to store firmware, assets, and file systems.
+* **Integrated Wi-Fi Stack**: Built-in 802.11 b/g/n Wi-Fi transceiver running at 2.4 GHz. It supports WEP, WPA/WPA2 Personal/Enterprise security protocols. It includes an integrated TR switch, balun, LNA, power amplifier, and matching network.
+* **Low-Power Modes**: Supports three sleep configurations to conserve power in battery-operated nodes:
+  - **Modem Sleep** (~15 mA): CPU remains active, Wi-Fi radio is powered down between beacon intervals.
+  - **Light Sleep** (~0.9 mA): CPU clock is gated, Wi-Fi radio is off. The chip wakes up on external interrupts.
+  - **Deep Sleep** (~20 µA): Only the internal Real-Time Clock (RTC) remains active. The chip resets on wake-up (GPIO16/D0 connected to RST).
+* **Hardware Peripherals**: Features 17 GPIO pins, hardware PWM (Pulse-Width Modulation), SPI, I2C, I2S, UART interfaces, and a 10-bit analog-to-digital converter (ADC).
+
+### Real-World Applications
+1. **Smart Home Automation**: Wireless control of smart plugs, lighting fixtures, appliances, and automated blinds.
+2. **Environmental Tracking**: Standalone weather stations, air quality monitors, and greenhouse climate controls.
+3. **Wearable Health Monitors**: Portable pulse, step, and temperature trackers that transmit telemetry to local displays or remote apps.
+4. **Precision Agriculture**: Remote soil moisture, ambient light, and irrigation control systems for farm management.
+
+### Industrial Usecases
+1. **Predictive Maintenance**: Monitoring vibration and temperature of machinery, logging telemetry, and reporting anomalies before failure occurs.
+2. **Industrial IoT Gateways**: Bridging legacy serial protocol devices (RS-232/RS-485) to local Wi-Fi networks or MQTT brokers.
+3. **Asset Tracking & Logistics**: Monitoring temperature, humidity, and location of sensitive shipments inside warehouses and transport containers.
+4. **Remote Telemetry & SCADA**: Wireless transmission of tank levels, pressure values, and power consumption statistics to industrial SCADA systems.
+
 ---
 
 ## 8. In-Depth about the Project-Specific Sensor: HC-SR04
@@ -258,7 +280,7 @@ $$v = 331.3 + (0.606 \times T) \text{ m/s}$$
 
 At a standard room temperature of $20^\circ\text{C}$:
 
-$$v = 331.3 + (0.606 \times 20) = 343.42 \text{ m/s} = 0.034342 \text{ cm/\mu s}$$
+$$v = 331.3 + (0.606 \times 20) = 343.42 \text{ m/s} = 0.034342 \text{ cm/}\mu\text{s}$$
 
 ### Ranging Derivation
 To measure distance, the microcontroller issues a 10 µs High pulse on the Trigger line. The HC-SR04 internal chip immediately drives a 40 kHz pulse train to the transmitter.
@@ -275,7 +297,7 @@ $$d = \frac{v \times \Delta t}{2}$$
 
 At standard temperature ($20^\circ\text{C}$):
 
-$$d = \frac{0.0343 \text{ cm/\mu s} \times \Delta t \text{ (\mu s)}}{2}$$
+$$d = \frac{0.0343 \text{ cm/}\mu\text{s} \times \Delta t \text{ (}\mu\text{s)}}{2}$$
 
 $$d = \frac{\Delta t}{58.3} \text{ cm}$$
 
@@ -462,6 +484,36 @@ void handleLive() {
 }
 ```
 
+### Program Flow Diagram
+The logical flowchart below maps the runtime behavior of the system's firmware:
+
+```mermaid
+graph TD
+    A[Start NodeMCU] --> B[Configure GPIO Pins: Trig:OUT, Echo:IN, Buzzer:OUT]
+    B --> C[Initialize Serial Port @ 9600 Baud]
+    C --> D[Configure Soft Access Point SSID: MeasureTool_AP]
+    D --> E[Start HTTP Server on Port 80]
+    E --> F[Enter Loop Phase]
+    F --> G[Call server.handleClient to process web requests]
+    G --> H{Is 300ms Sample Interval Met?}
+    H -->|No| K{Is Buzzer Active and Off Time Reached?}
+    H -->|Yes| I[Pulse TRIG High for 10µs]
+    I --> J[Measure ECHO pulse width via pulseIn]
+    J --> L{Is Pulse Duration Valid?}
+    L -->|No| K
+    L -->|Yes| M[Calculate Distance: cm = duration * 0.0343 / 2]
+    M --> N[Update Session minDist & maxDist stats]
+    N --> O{Is 5-second Save Interval Met?}
+    O -->|No| K
+    O -->|Yes| P[Write current distance to history array]
+    P --> Q[Turn on BUZZER and set Turn-off timer]
+    Q --> K
+    K -->|Yes| R[Turn off BUZZER GPIO13]
+    R --> S[Yield control to ESP8266 background system]
+    K -->|No| S
+    S --> F
+```
+
 ---
 
 ## 12. Working
@@ -511,36 +563,3 @@ We successfully built an offline, low-cost digital measurement instrument. By us
 1. **Speed of Sound Correction**: Add a DHT11 sensor to calculate the exact speed of sound based on real-time temperature, improving ranging accuracy.
 2. **Precision ADC Integration**: Replace the ultrasonic sensor with a time-of-flight (ToF) laser sensor (such as the VL53L0X) for millimeter-level accuracy and a narrower beam width.
 3. **Power Optimization**: Implement sleep modes to conserve battery life in portable setups.
-
----
-
-## 14. Flow Diagram
-
-The logical flowchart below maps the runtime behavior of the system's firmware:
-
-```mermaid
-graph TD
-    A[Start NodeMCU] --> B[Configure GPIO Pins: Trig:OUT, Echo:IN, Buzzer:OUT]
-    B --> C[Initialize Serial Port @ 9600 Baud]
-    C --> D[Configure Soft Access Point SSID: MeasureTool_AP]
-    D --> E[Start HTTP Server on Port 80]
-    E --> F[Enter Loop Phase]
-    F --> G[Call server.handleClient to process web requests]
-    G --> H{Is 300ms Sample Interval Met?}
-    H -->|No| K{Is Buzzer Active and Off Time Reached?}
-    H -->|Yes| I[Pulse TRIG High for 10µs]
-    I --> J[Measure ECHO pulse width via pulseIn]
-    J --> L{Is Pulse Duration Valid?}
-    L -->|No| K
-    L -->|Yes| M[Calculate Distance: cm = duration * 0.0343 / 2]
-    M --> N[Update Session minDist & maxDist stats]
-    N --> O{Is 5-second Save Interval Met?}
-    O -->|No| K
-    O -->|Yes| P[Write current distance to history array]
-    P --> Q[Turn on BUZZER and set Turn-off timer]
-    Q --> K
-    K -->|Yes| R[Turn off BUZZER GPIO13]
-    R --> S[Yield control to ESP8266 background system]
-    K -->|No| S
-    S --> F
-```
