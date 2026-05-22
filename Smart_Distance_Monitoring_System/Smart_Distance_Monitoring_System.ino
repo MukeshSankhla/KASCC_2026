@@ -1,6 +1,6 @@
 /*
  * ═══════════════════════════════════════════════════════════════
- * ESP8266 Ultrasonic Measurement Tool — Access Point + Web Dashboard
+ * ESP8266 Smart Distance Monitoring System — Access Point + Web Dashboard
  * (Offline-Ready, Digital Ruler Theme, Live Distance Display)
  * * Wiring:
  * HC-SR04 VCC  → Vin (5V)
@@ -93,7 +93,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>ESP8266 Measurement Tool</title>
+<title>Smart Distance Monitoring System</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;600;800&display=swap');
   :root{--bg:#0a0c10;--panel:#12151c;--border:#1e2533;--accent1:#00e5ff;--accent2:#7c4dff;
@@ -175,12 +175,12 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 </head>
 <body>
 <header>
-  <h1>&#x1F4CF; Measure Tool</h1>
+  <h1>&#x1F4CF; Distance Monitor</h1>
   <p>ESP8266 &bull; HC-SR04 ULTRASONIC &bull; AP MODE</p>
 </header>
 <div class="college-info">
   <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
-  <div class="ci-proj">Project: smart Distance system using Ultrasonic Sensor and NodeMCU ESP8266; Ultrasonic Sensor</div>
+  <div class="ci-proj">Project: Smart Distance Monitoring System using Ultrasonic Sensor and NodeMCU ESP8266</div>
   <div class="ci-team">
     <b>Sumati</b> <span class="Bsc 6th sem">(Roll No. U27RE23S0114)</span> &bull;
     <b>Shilpa</b> <span class="Bsc 6th sem">(Roll No. U27RE23S0097)</span> &bull;
@@ -242,7 +242,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
     </tbody>
   </table>
 </div>
-<footer>ESP8266 Measurement Tool &bull; 192.168.4.1 &bull; SSID: MeasureTool_AP</footer>
+<footer>Smart Distance Monitoring System &bull; 192.168.4.1 &bull; SSID: MeasureTool_AP</footer>
 
 <script>
 function fmtUptime(s){var h=Math.floor(s/3600);var m=Math.floor((s%3600)/60);var sec=s%60;return(h?h+'h ':'')+(m?m+'m ':'')+sec+'s'}
@@ -320,7 +320,7 @@ void setup() {
   pinMode(BUZZER_PIN, OUTPUT);
   digitalWrite(BUZZER_PIN, LOW);
 
-  Serial.println("\n\n=== ESP8266 Measurement Tool ===");
+  Serial.println("\n\n=== Smart Distance Monitoring System ===");
 
   WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(AP_IP, AP_IP, AP_SUBNET);

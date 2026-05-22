@@ -1,4 +1,4 @@
-# 🌱 ESP8266 Farm Monitor — Soil Moisture Monitoring System
+# 🌱 Smart Soil Moisture Monitoring System for Precision Irrigation
 
 ## 1. Problem Statement
 
@@ -59,6 +59,10 @@ Soil Moisture Sensor → A0 (Analog Read) → ESP8266 (Calibration & Mapping)
 | VCC | 3.3V |
 | GND | GND |
 | LED Anode | D2 (GPIO4) via 220Ω resistor |
+
+### Circuit Diagram
+
+![Circuit Diagram](../images/smart_soil_moisture_monitoring_system.png)
 
 ### Dashboard Features
 

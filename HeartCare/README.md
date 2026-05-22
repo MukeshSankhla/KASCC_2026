@@ -1,4 +1,4 @@
-# 💓 ESP8266 Pulse Oximeter — Heart Rate Monitor
+# 💓 HeartCare: IoT Heart Beat Monitoring and Visualization System
 
 ## 1. Problem Statement
 
@@ -52,10 +52,14 @@ Pulse Sensor → A0 (Analog Read) → ESP8266 (Peak Detection Algorithm)
 
 | Pulse Sensor Pin | NodeMCU Pin |
 |-----------------|-------------|
-| Signal (S) | A0 |
-| VCC (+) | 3.3V |
-| GND (−) | GND |
-| LED Anode | D2 (GPIO4) via 220Ω resistor |
+| Signal (S)      | A0          |
+| VCC (+)         | 3.3V        |
+| GND (−)         | GND         |
+| LED Anode       | D2 (GPIO4) via 220Ω resistor |
+
+### Circuit Diagram
+
+![Circuit Diagram](../images/heartcare.png)
 
 ### Dashboard Features
 

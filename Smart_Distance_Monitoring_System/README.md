@@ -1,4 +1,4 @@
-# 📏 ESP8266 Measurement Tool — Ultrasonic Distance Measurement System
+# 📏 Smart Distance Monitoring System using Ultrasonic Sensor and NodeMCU ESP8266
 
 ## 1. Problem Statement
 
@@ -66,6 +66,10 @@ HC-SR04 Ultrasonic → GPIO14/12 (Trig/Echo) → ESP8266 (Distance Calculation)
 | Buzzer (−) | GND | |
 
 > ⚠️ **Important:** Always use a voltage divider on the Echo pin. The HC-SR04 outputs 5V pulses, and ESP8266 GPIO pins are 3.3V tolerant only.
+
+### Circuit Diagram
+
+![Circuit Diagram](../images/smart_distance_monitoring_system.png)
 
 ### Dashboard Features
 

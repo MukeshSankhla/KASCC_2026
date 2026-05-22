@@ -1,6 +1,6 @@
 /*
  * ═══════════════════════════════════════════════════════════════
- * ESP8266 TEMT6000 Lux Meter — Access Point + Web Dashboard
+ * ESP8266 IoT-Based Ambient Light Intensity Analyzer — Access Point + Web Dashboard
  * (Offline-Ready, Rounded Gauges, LED Indicator)
  * * Wiring:
  * TEMT6000 OUT/SIG → A0 (Analog Pin)
@@ -80,7 +80,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>ESP8266 Lux Meter</title>
+<title>IoT-Based Ambient Light Intensity Analyzer</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;600;800&display=swap');
   :root{--bg:#0a0a0a;--panel:#121212;--border:#2a2a2a;--accent1:#ffcc00;--accent2:#fdb813;
@@ -153,12 +153,12 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 </head>
 <body>
 <header>
-  <h1>&#9728;&#xFE0F; Lux Meter</h1>
+  <h1>&#9728;&#xFE0F; Light Intensity Analyzer</h1>
   <p>ESP8266 &bull; TEMT6000 &bull; ACCESS POINT MODE</p>
 </header>
 <div class="college-info">
   <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
-  <div class="ci-proj">Project: IOT Based Ambient Light Intensity Analyzer Using NodeMCU; TEMT6000 Sensor</div>
+  <div class="ci-proj">Project: IoT-Based Ambient Light Intensity Analyzer using NodeMCU</div>
   <div class="ci-team">
     <b>Sneha Doijode</b> <span class="roll">(Roll No. U27RE23S0376)</span> &bull;
     <b>Shruti Halkeri</b> <span class="roll">(Roll No. U27RE23S0123)</span> &bull;
@@ -225,7 +225,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
     </tbody>
   </table>
 </div>
-<footer>ESP8266 Lux Meter &bull; 192.168.4.1 &bull; SSID: LuxMeter_AP</footer>
+<footer>IoT-Based Ambient Light Intensity Analyzer &bull; 192.168.4.1 &bull; SSID: LuxMeter_AP</footer>
 
 <script>
 function fmtUptime(s){var h=Math.floor(s/3600);var m=Math.floor((s%3600)/60);var sec=s%60;return(h?h+'h ':'')+(m?m+'m ':'')+sec+'s'}
@@ -325,7 +325,7 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW);
   
-  Serial.println("\n\n=== ESP8266 TEMT6000 Lux Meter ===");
+  Serial.println("\n\n=== IoT-Based Ambient Light Intensity Analyzer ===");
 
   WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(AP_IP, AP_IP, AP_SUBNET);

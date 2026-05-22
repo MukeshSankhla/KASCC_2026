@@ -1,6 +1,6 @@
 /*
  * ═══════════════════════════════════════════════════════════════
- * ESP8266 Smart Blind Stick — Obstacle Detection + Web Dashboard
+ * IoT Obstacle Detection and Alert System using IR Sensor — Access Point + Web Dashboard
  * (Ultrasonic Cane for Visually Impaired, AP Mode)
  * * Wiring:
  * HC-SR04 VCC  → Vin (5V)
@@ -9,7 +9,7 @@
  * HC-SR04 ECHO → D6 (GPIO12) -> Use Voltage Divider!
  * Buzzer       → D7 (GPIO13)
  * * Board: NodeMCU 1.0 (ESP-12E Module)
- * Connect to WiFi SSID: "BlindStick_AP"  Password: "12345678"
+ * Connect to WiFi SSID: "ObstacleAlert_AP"  Password: "12345678"
  * Then open browser → http://192.168.4.1
  * ═══════════════════════════════════════════════════════════════
  */
@@ -22,7 +22,7 @@
 #define ECHO_PIN      12         // D6
 #define BUZZER_PIN    13         // D7
 
-const char* AP_SSID     = "BlindStick_AP";
+const char* AP_SSID     = "ObstacleAlert_AP";
 const char* AP_PASSWORD = "12345678";
 const IPAddress AP_IP(192, 168, 4, 1);
 const IPAddress AP_SUBNET(255, 255, 255, 0);
@@ -90,7 +90,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Smart Blind Stick</title>
+<title>IoT Obstacle Detection and Alert System</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;600;800&display=swap');
   :root{--bg:#0c0c14;--panel:#13131f;--border:#252540;--safe:#00e676;--caution:#ffab00;
@@ -201,12 +201,12 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 </head>
 <body>
 <header>
-  <h1>&#x1F9AF; Smart Blind Stick</h1>
-  <p>ESP8266 &bull; ULTRASONIC &bull; ASSISTIVE TECH</p>
+  <h1>&#x1F9AF; IoT Obstacle Detection</h1>
+  <p>ESP8266 &bull; ASSISTIVE TECH</p>
 </header>
 <div class="college-info">
   <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
-  <div class="ci-proj">Project: Smart Blind Stick using ESP8266 &amp; Ultrasonic Sensor</div>
+  <div class="ci-proj">Project: IoT Obstacle Detection and Alert System using IR Sensor</div>
   <div class="ci-team">
     <b>shivakumar</b> <span class="roll">(Roll No. U27RE23S0212)</span> &bull;
     <b>MAHESH</b> <span class="roll">(Roll No. U27RE23S0347 )</span> &bull;
@@ -281,7 +281,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
     </tbody>
   </table>
 </div>
-<footer>ESP8266 Smart Blind Stick &bull; 192.168.4.1 &bull; SSID: BlindStick_AP</footer>
+<footer>IoT Obstacle Detection System &bull; 192.168.4.1 &bull; SSID: ObstacleAlert_AP</footer>
 
 <script>
 function fmtUptime(s){var h=Math.floor(s/3600);var m=Math.floor((s%3600)/60);var sec=s%60;return(h?h+'h ':'')+(m?m+'m ':'')+sec+'s'}
@@ -379,7 +379,7 @@ void setup() {
   pinMode(BUZZER_PIN, OUTPUT);
   digitalWrite(BUZZER_PIN, LOW);
 
-  Serial.println("\n\n=== ESP8266 Smart Blind Stick ===");
+  Serial.println("\n\n=== IoT Obstacle Detection and Alert System ===");
 
   WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(AP_IP, AP_IP, AP_SUBNET);

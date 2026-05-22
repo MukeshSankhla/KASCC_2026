@@ -1,6 +1,6 @@
 /*
  * ═══════════════════════════════════════════════════════════════
- * ESP8266 Radar Scanner — Access Point + Web Dashboard
+ * Smart Motion Radar with Servo Rotation using Ultrasonic Sensor and NodeMCU — Access Point + Web Dashboard
  * (Offline-Ready, Tactical Green Radar Theme, Non-Blocking Sweep)
  * * Wiring:
  * SG90 Servo   → VCC to Vin(5V), GND to GND, Signal to D2 (GPIO4)
@@ -8,7 +8,7 @@
  * HC-SR04 TRIG → D5 (GPIO14)
  * HC-SR04 ECHO → D6 (GPIO12) -> Use Voltage Divider!
  * * Board: NodeMCU 1.0 (ESP-12E Module) or any ESP8266 board
- * Connect to WiFi: "Radar_AP" Password: "12345678"
+ * Connect to WiFi: "SmartRadar_AP" Password: "12345678"
  * Open browser → http://192.168.4.1
  * ═══════════════════════════════════════════════════════════════
  */
@@ -22,7 +22,7 @@
 #define TRIG_PIN      14         // D5
 #define ECHO_PIN      12         // D6
 
-const char* AP_SSID     = "Radar_AP";
+const char* AP_SSID     = "SmartRadar_AP";
 const char* AP_PASSWORD = "12345678";
 const IPAddress AP_IP(192, 168, 4, 1);
 const IPAddress AP_SUBNET(255, 255, 255, 0);
@@ -65,7 +65,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>ESP8266 Tactical Radar</title>
+<title>Smart Motion Radar with Servo Rotation</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
   :root{--bg:#020804;--panel:#05140a;--border:#0a2e16;--radar:#00ff41;--radar-dim:#005515;--blip:#ff3333;--text:#ccffcc}
@@ -114,7 +114,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 </header>
 <div class="college-info">
   <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
-  <div class="ci-proj">Project: Radar Scanner using ESP8266, Servo &amp; Ultrasonic</div>
+  <div class="ci-proj">Project: Smart Motion Radar with Servo Rotation using Ultrasonic Sensor and NodeMCU</div>
   <div class="ci-team">
     <b>pooja</b> <span class="Bsc 6th sem">(Roll No. U27RE23S0325)</span> &bull;
     <b>Sakshita</b> <span class=Bsc 6th sem"roll">(Roll No. U27RE23S0331)</span> &bull;
@@ -145,7 +145,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
   <span><span class="scope-dot red"></span> Close (&lt;20cm)</span>
 </div>
 
-<footer>AEROSPACE DEFENSE DASHBOARD &bull; SYSTEM ONLINE</footer>
+<footer>Smart Motion Radar &bull; 192.168.4.1 &bull; SSID: SmartRadar_AP</footer>
 
 <script>
 var canvas=document.getElementById('radarCanvas');
@@ -272,7 +272,8 @@ void setup() {
   WiFi.softAPConfig(AP_IP, AP_IP, AP_SUBNET);
   WiFi.softAP(AP_SSID, AP_PASSWORD);
   
-  Serial.println("\n[SYSTEM] RADAR ONLINE");
+  Serial.println("\n\n=== Smart Motion Radar System ===");
+  Serial.println("[SYSTEM] RADAR ONLINE");
   Serial.println("[WIFI] SSID: " + String(AP_SSID));
 
   server.on("/", handleRoot);

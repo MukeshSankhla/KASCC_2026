@@ -1,4 +1,4 @@
-# 🌡️ ESP8266 Weather Station — Temperature & Humidity Monitor
+# 🌡️ ClimateSense: IoT Temperature & Humidity Monitoring using DHT11
 
 ## 1. Problem Statement
 
@@ -51,10 +51,14 @@ DHT11 Sensor → GPIO2 (Digital Read) → ESP8266 (Data Processing)
 
 | DHT11 Pin | NodeMCU Pin |
 |-----------|-------------|
-| DATA | D4 (GPIO2) |
-| VCC | 3.3V |
-| GND | GND |
+| DATA      | D4 (GPIO2)   |
+| VCC       | 3.3V        |
+| GND       | GND         |
 | LED Anode | D2 (GPIO4) via resistor |
+
+### Circuit Diagram
+
+![Circuit Diagram](../images/climatesense.png)
 
 ### Dashboard Features
 

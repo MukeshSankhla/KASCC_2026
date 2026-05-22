@@ -1,4 +1,4 @@
-# 🦯 ESP8266 Smart Blind Stick — Obstacle Detection for Visually Impaired
+# 🦯 IoT Obstacle Detection and Alert System using IR Sensor
 
 ## 1. Problem Statement
 
@@ -66,12 +66,16 @@ HC-SR04 Ultrasonic → GPIO14/12 (Trig/Echo) → ESP8266 (Distance + Zone Logic)
 
 | Component Pin | NodeMCU Pin | Notes |
 |--------------|-------------|-------|
-| HC-SR04 VCC | Vin (5V) | Requires 5V supply |
-| HC-SR04 GND | GND | |
+| HC-SR04 VCC  | Vin (5V)    | Requires 5V supply |
+| HC-SR04 GND  | GND         | |
 | HC-SR04 TRIG | D5 (GPIO14) | |
 | HC-SR04 ECHO | D6 (GPIO12) | **Through voltage divider!** |
-| Buzzer (+) | D7 (GPIO13) | Active buzzer |
-| Buzzer (−) | GND | |
+| Buzzer (+)   | D7 (GPIO13) | Active buzzer |
+| Buzzer (−)   | GND         | |
+
+### Circuit Diagram
+
+![Circuit Diagram](../images/iot_obstacle_detection_system.png)
 
 ### Dashboard Features
 

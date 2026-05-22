@@ -1,6 +1,6 @@
 /*
  * ═══════════════════════════════════════════════════════════════
- * ESP8266 Heart Rate Monitor — Access Point + Web Dashboard
+ * HeartCare: IoT Heart Beat Monitoring and Visualization System — Access Point + Web Dashboard
  * (Offline-Ready, Crimson Theme, Rounded Gauges, Live Heartbeat)
  * * Wiring:
  * Pulse Sensor Signal → A0 (Analog Pin)
@@ -8,7 +8,7 @@
  * Pulse Sensor GND    → GND
  * Heartbeat LED       → D2 (GPIO4) -> 220Ω Resistor -> GND
  * * Board: NodeMCU 1.0 (ESP-12E Module) or any ESP8266 board
- * Connect to WiFi SSID: "HeartMonitor_AP"  Password: "12345678"
+ * Connect to WiFi SSID: "HeartCare_AP"  Password: "12345678"
  * Then open browser → http://192.168.4.1
  * ═══════════════════════════════════════════════════════════════
  */
@@ -20,7 +20,7 @@
 #define SENSOR_PIN    A0         // Analog input for Pulse Sensor
 #define LED_PIN       2          // GPIO4 = D2 on NodeMCU
 
-const char* AP_SSID     = "Oximeter";
+const char* AP_SSID     = "HeartCare_AP";
 const char* AP_PASSWORD = "12345678";
 const IPAddress AP_IP(192, 168, 4, 1);
 const IPAddress AP_SUBNET(255, 255, 255, 0);
@@ -84,7 +84,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>ESP8266 Pulse Monitor</title>
+<title>HeartCare: IoT Heart Beat Monitoring</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;600;800&display=swap');
   :root {
@@ -172,12 +172,12 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 </head>
 <body>
 <header>
-  <h1>&#x1F493; Vitals Dash</h1>
-  <p>ESP8266 &bull; PULSE SENSOR &bull; AP MODE</p>
+  <h1>&#x1F493; HeartCare</h1>
+  <p>ESP8266 &bull; AP MODE</p>
 </header>
 <div class="college-info">
   <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
-  <div class="ci-proj">Project: Heart Rate Monitor using ESP8266 &amp; Pulse Sensor</div>
+  <div class="ci-proj">Project: HeartCare: IoT Heart Beat Monitoring and Visualization System</div>
   <div class="ci-team">
     <b>arati ganga</b> <span class="roll">(Roll No. U27RE23S0317)</span> &bull;
     <b>bhuvaneshwari</b> <span class="roll">(Roll No. U27RE23S0367)</span> &bull;
@@ -244,7 +244,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
     </tbody>
   </table>
 </div>
-<footer>ESP8266 Pulse Monitor &bull; 192.168.4.1 &bull; SSID: Oximeter</footer>
+<footer>HeartCare &bull; 192.168.4.1 &bull; SSID: HeartCare_AP</footer>
 
 <script>
 function fmtUptime(s){const h=Math.floor(s/3600);const m=Math.floor((s%3600)/60);const sec=s%60;return(h?h+'h ':'')+(m?m+'m ':'')+sec+'s'}
@@ -319,7 +319,7 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW);
   
-  Serial.println("\n\n=== ESP8266 Pulse Monitor ===");
+  Serial.println("\n\n=== HeartCare: IoT Heart Beat Monitoring ===");
 
   WiFi.mode(WIFI_AP);
   WiFi.softAPConfig(AP_IP, AP_IP, AP_SUBNET);

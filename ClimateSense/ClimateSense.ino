@@ -1,6 +1,6 @@
 /*
  * ═══════════════════════════════════════════════════════════════
- * ESP8266 DHT11 Weather Station — Access Point + Web Dashboard
+ * ClimateSense: IoT Temperature & Humidity Monitoring using DHT11 — Access Point + Web Dashboard
  * (Chart-Free, Rounded Gauges, LED Indicator Version)
  * * Wiring:
  * DHT11 DATA  → D4 (GPIO2)
@@ -18,7 +18,7 @@
 #define DHTPIN        5          // D1 on NodeMCU
 #define LED_PIN       2          // D4 on NodeMCU
 
-const char* AP_SSID     = "WeatherStation";
+const char* AP_SSID     = "ClimateSense_AP";
 const char* AP_PASSWORD = "12345678";      // min 8 chars for WPA2
 const IPAddress AP_IP(192, 168, 4, 1);
 const IPAddress AP_SUBNET(255, 255, 255, 0);
@@ -80,7 +80,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>ESP8266 Weather Station</title>
+<title>ClimateSense: IoT Temperature & Humidity Monitoring</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;600;800&display=swap');
 
@@ -280,12 +280,12 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 <body>
 
 <header>
-  <h1>&#127782; Weather Station</h1>
+  <h1>&#127782; ClimateSense</h1>
   <p>ESP8266 &bull; DHT11 &bull; ACCESS POINT MODE</p>
 </header>
 <div class="college-info">
   <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
-  <div class="ci-proj">Project: Weather Station using ESP8266 &amp; DHT11 Sensor</div>
+  <div class="ci-proj">Project: ClimateSense: IoT Temperature &amp; Humidity Monitoring using DHT11</div>
   <div class="ci-team">
     <b>pooja </b> <span class="roll">(Roll No.  239)</span> &bull;
     <b>bhavani </b> <span class="roll">(Roll No. 195)</span> &bull;
@@ -347,7 +347,7 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
   </table>
 </div>
 
-<footer>ESP8266 Weather Station &bull; 192.168.4.1 &bull; SSID: WeatherStation</footer>
+<footer>ClimateSense &bull; 192.168.4.1 &bull; SSID: ClimateSense_AP</footer>
 
 <script>
 // ─── Data fetch & update ──────────────────────────────────────────
@@ -468,7 +468,7 @@ void setup() {
   pinMode(LED_PIN, OUTPUT);
   digitalWrite(LED_PIN, LOW); // Ensure it starts off
   
-  Serial.println("\n\n=== ESP8266 Weather Station ===");
+  Serial.println("\n\n=== ClimateSense: IoT Temp & Humidity ===");
   Serial.println("[DHT11] Initialized on GPIO " + String(DHTPIN));
 
   // Configure Access Point

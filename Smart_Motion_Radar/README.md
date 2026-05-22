@@ -1,4 +1,4 @@
-# 🎯 ESP8266 Radar Scanner — 180° Ultrasonic Radar System
+# 🎯 Smart Motion Radar with Servo Rotation using Ultrasonic Sensor and NodeMCU
 
 ## 1. Problem Statement
 
@@ -59,13 +59,17 @@ HC-SR04 Ultrasonic (mounted on servo) → GPIO14/12 (Trig/Echo)
 
 | Component Pin | NodeMCU Pin | Notes |
 |--------------|-------------|-------|
-| Servo Signal | D2 (GPIO4) | PWM control |
-| Servo VCC | Vin (5V) | External 5V recommended for stability |
-| Servo GND | GND | |
+| Servo Signal | D2 (GPIO4)  | PWM control |
+| Servo VCC    | Vin (5V)    | External 5V recommended for stability |
+| Servo GND    | GND         | |
 | HC-SR04 TRIG | D5 (GPIO14) | |
 | HC-SR04 ECHO | D6 (GPIO12) | **Through voltage divider!** |
-| HC-SR04 VCC | Vin (5V) | |
-| HC-SR04 GND | GND | |
+| HC-SR04 VCC  | Vin (5V)    | |
+| HC-SR04 GND  | GND         | |
+
+### Circuit Diagram
+
+![Circuit Diagram](../images/smart_motion_radar.png)
 
 ### Dashboard Features
 

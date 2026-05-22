@@ -6,16 +6,15 @@ A collection of **7 hands-on IoT projects** built with the ESP8266 (NodeMCU) mic
 
 ## 📂 Projects Overview
 
-| # | Project | Sensor | Dashboard | Description |
-|---|---------|--------|-----------|-------------|
-| 1 | [Oximeter](./Oximeter/) | Pulse Sensor | ✅ Beating Heart UI | Heart rate monitor with BPM-synced animated heart & ECG waveform |
-| 2 | [Weather Station](./ESP8266_DHT11_Dashboard/) | DHT11 | ✅ Radial Gauges | Temperature & humidity monitor with animated circular SVG gauges |
-| 3 | [Farm Monitor](./Farm_Monitor/) | Soil Moisture | ✅ Animated Plant | Soil moisture monitor with reactive plant character |
-| 4 | [Lux Meter](./Lux_Meter/) | TEMT6000 | ✅ Animated Sun | Light intensity meter with rotating sun visualization |
-| 5 | [Water Tank Monitor](./Water_Tank_Monitor/) | HC-SR04 | ✅ Tank + Bubbles | Water level monitor with animated tank, bubbles & fish |
-| 6 | [Radar Scanner](./Radar/) | HC-SR04 + Servo | ✅ Radar Scope | 180° radar scanner with phosphor glow trail |
-| 7 | [Smart Blind Stick](./Obstacle_Detection_System/) | HC-SR04 | ✅ Walking Person | Assistive obstacle detector with animated person & cane |
-| 8 | [Measurement Tool](./Measurement_Tool/) | HC-SR04 | ✅ Digital Ruler | Contactless distance meter with ruler bar & beam animation |
+| # | Project Title | Relevant SDG(s) | Code & Docs | Circuit Connection |
+|---|---------------|-----------------|-------------|--------------------|
+| 1 | **Smart Distance Monitoring System** using Ultrasonic Sensor and NodeMCU ESP8266 | 🏗️ **SDG 9**: Industry, Innovation & Infrastructure<br>🏙️ **SDG 11**: Sustainable Cities & Communities | [Smart_Distance_Monitoring_System](./Smart_Distance_Monitoring_System/) | [Circuit Diagram](./images/smart_distance_monitoring_system.png) |
+| 2 | **IoT-Based Ambient Light Intensity Analyzer** using NodeMCU | ⚡ **SDG 7**: Affordable & Clean Energy<br>🌍 **SDG 13**: Climate Action | [Ambient_Light_Intensity_Analyzer](./Ambient_Light_Intensity_Analyzer/) | [Circuit Diagram](./images/ambient_light_intensity_analyzer.png) |
+| 3 | **Smart Soil Moisture Monitoring System for Precision Irrigation** | 🌾 **SDG 2**: Zero Hunger<br>💧 **SDG 6**: Clean Water & Sanitation | [Smart_Soil_Moisture_Monitoring_System](./Smart_Soil_Moisture_Monitoring_System/) | [Circuit Diagram](./images/smart_soil_moisture_monitoring_system.png) |
+| 4 | **ClimateSense**: IoT Temperature & Humidity Monitoring using DHT11 | 🏙️ **SDG 11**: Sustainable Cities & Communities<br>🌍 **SDG 13**: Climate Action | [ClimateSense](./ClimateSense/) | [Circuit Diagram](./images/climatesense.png) |
+| 5 | **IoT Obstacle Detection and Alert System** using IR Sensor | 🏥 **SDG 3**: Good Health & Well-Being<br>🏗️ **SDG 9**: Industry, Innovation & Infrastructure | [IoT_Obstacle_Detection_System](./IoT_Obstacle_Detection_System/) | [Circuit Diagram](./images/iot_obstacle_detection_system.png) |
+| 6 | **HeartCare**: IoT Heart Beat Monitoring and Visualization System | 🏥 **SDG 3**: Good Health & Well-Being | [HeartCare](./HeartCare/) | [Circuit Diagram](./images/heartcare.png) |
+| 7 | **Smart Motion Radar** with Servo Rotation using Ultrasonic Sensor and NodeMCU | 🏗️ **SDG 9**: Industry, Innovation & Infrastructure<br>🏙️ **SDG 11**: Sustainable Cities & Communities | [Smart_Motion_Radar](./Smart_Motion_Radar/) | [Circuit Diagram](./images/smart_motion_radar.png) |
 
 ---
 
@@ -99,8 +98,8 @@ Some projects require external libraries. Install them via the **Library Manager
 
 | Library | Used By | How to Install |
 |---------|---------|----------------|
-| **DHT11** | Weather Station | Search `DHT11` in Library Manager → Install by **Dhruba Saha** |
-| **Servo** | Radar Scanner | Usually pre-installed. If not, search `Servo` → Install by **Arduino** |
+| **DHT11** | ClimateSense | Search `DHT11` in Library Manager → Install by **Dhruba Saha** |
+| **Servo** | Smart Motion Radar | Usually pre-installed. If not, search `Servo` → Install by **Arduino** |
 | **ESP8266WiFi** | All projects | Included with ESP8266 Board Manager (no separate install needed) |
 | **ESP8266WebServer** | All web projects | Included with ESP8266 Board Manager (no separate install needed) |
 
@@ -110,7 +109,7 @@ Some projects require external libraries. Install them via the **Library Manager
 
 ### Step 5: Upload Your First Sketch
 
-1. Open any `.ino` file from this repository (e.g., `Oximeter/Oximeter.ino`)
+1. Open any `.ino` file from this repository (e.g., `HeartCare/HeartCare.ino`)
 2. Connect your NodeMCU via USB
 3. Select the correct **Board** and **Port** from the **Tools** menu
 4. Click the **Upload** button (→ arrow) or press `Ctrl + U`

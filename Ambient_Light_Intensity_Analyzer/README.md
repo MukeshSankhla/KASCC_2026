@@ -1,4 +1,4 @@
-# ☀️ ESP8266 Lux Meter — Light Intensity Monitor
+# ☀️ IoT-Based Ambient Light Intensity Analyzer using NodeMCU
 
 ## 1. Problem Statement
 
@@ -57,6 +57,10 @@ TEMT6000 Sensor → A0 (Analog Read) → ESP8266 (Voltage → Current → Lux Co
 | VCC | 3.3V |
 | GND | GND |
 | LED Anode | D2 (GPIO4) via 220Ω resistor |
+
+### Circuit Diagram
+
+![Circuit Diagram](../images/ambient_light_intensity_analyzer.png)
 
 ### Dashboard Features
 
