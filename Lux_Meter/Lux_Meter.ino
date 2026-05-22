@@ -158,12 +158,12 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 </header>
 <div class="college-info">
   <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
-  <div class="ci-proj">Project: Lux Meter using ESP8266 &amp; TEMT6000 Sensor</div>
+  <div class="ci-proj">Project: IOT Based Ambient Light Intensity Analyzer Using NodeMCU; TEMT6000 Sensor</div>
   <div class="ci-team">
-    <b>Rahul Sharma</b> <span class="roll">(Roll No. 2024CS101)</span> &bull;
-    <b>Priya Patil</b> <span class="roll">(Roll No. 2024CS102)</span> &bull;
-    <b>Amit Kumar</b> <span class="roll">(Roll No. 2024CS103)</span> &bull;
-    <b>Sneha Reddy</b> <span class="roll">(Roll No. 2024CS104)</span>
+    <b>Sneha Doijode</b> <span class="roll">(Roll No. U27RE23S0376)</span> &bull;
+    <b>Shruti Halkeri</b> <span class="roll">(Roll No. U27RE23S0123)</span> &bull;
+    <b>Madhumati Reddy</b> <span class="roll">(Roll No. U27RE23S0150)</span> &bull;
+    <b>Harish</b> <span class="roll">(Roll No. U27RE23S0371)</span>
   </div>
 </div>
 <div class="status-bar">
