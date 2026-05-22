@@ -15,8 +15,8 @@
 #include <DHT11.h>
 
 // ── Configuration ────────────────────────────────────────────────
-#define DHTPIN        5          // GPIO2 = D4 on NodeMCU
-#define LED_PIN       4          // GPIO4 = D2 on NodeMCU
+#define DHTPIN        5          // D1 on NodeMCU
+#define LED_PIN       2          // D4 on NodeMCU
 
 const char* AP_SSID     = "WeatherStation";
 const char* AP_PASSWORD = "12345678";      // min 8 chars for WPA2
