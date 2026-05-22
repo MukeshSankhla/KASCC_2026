@@ -179,10 +179,11 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
   <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
   <div class="ci-proj">Project: Heart Rate Monitor using ESP8266 &amp; Pulse Sensor</div>
   <div class="ci-team">
-    <b>Rahul Sharma</b> <span class="roll">(Roll No. 2024CS101)</span> &bull;
-    <b>Priya Patil</b> <span class="roll">(Roll No. 2024CS102)</span> &bull;
-    <b>Amit Kumar</b> <span class="roll">(Roll No. 2024CS103)</span> &bull;
-    <b>Sneha Reddy</b> <span class="roll">(Roll No. 2024CS104)</span>
+    <b>arati ganga</b> <span class="roll">(Roll No. U27RE23S0317)</span> &bull;
+    <b>bhuvaneshwari</b> <span class="roll">(Roll No. U27RE23S0367)</span> &bull;
+    <b>Maheen</b> <span class="roll">(Roll No. U27RE23S0312)</span> &bull;
+    <b>Siddu</b> <span class="roll">(Roll No. U27RE23S0307)</span> &bull;
+    <b>pavan</b> <span class="roll">(Roll No. U27RE23S0297)</span>
   </div>
 </div>
 <div class="status-bar">
