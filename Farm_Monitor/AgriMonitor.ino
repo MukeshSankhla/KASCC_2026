@@ -185,12 +185,14 @@ const char HTML_PAGE[] PROGMEM = R"rawhtml(
 </header>
 <div class="college-info">
   <div class="ci-name">Karnatak Arts, Science and Commerce College, Bidar</div>
-  <div class="ci-proj">Project: Smart Farm Monitor using ESP8266 &amp; Soil Sensor</div>
+  <div class="ci-proj">Project: Smart soil moisture monitoring system for precision irrigation; Soil Sensor</div>
   <div class="ci-team">
-    <b>Rahul Sharma</b> <span class="roll">(Roll No. 2024CS101)</span> &bull;
-    <b>Priya Patil</b> <span class="roll">(Roll No. 2024CS102)</span> &bull;
-    <b>Amit Kumar</b> <span class="roll">(Roll No. 2024CS103)</span> &bull;
-    <b>Sneha Reddy</b> <span class="roll">(Roll No. 2024CS104)</span>
+    <b>Ashwini</b> <span class="roll">(Roll No. U27RE23S0124)</span> &bull;
+    <b>Priya</b> <span class="roll">(Roll No. U27RE23S0183)</span> &bull;
+    <b>sukanya</b> <span class="roll">(Roll No. U27RE23S0145)</span> &bull;
+    <b>Bhavani</b> <span class="roll">(Roll No. U27RE23S0392)</span> &bull;
+    <b>Baswaraj</b> <span class="roll">(Roll No. U27RE23S0396)</span> &bull;
+    <b>Adithya</b> <span class="roll">(Roll No. U27RE23S0128)</span> &bull;
   </div>
 </div>
 <div class="status-bar">
